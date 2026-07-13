@@ -63,7 +63,7 @@
             font-size: 12px; cursor: pointer;
         }
 
-        /* กล่องฟอร์ม ล็อกอิน / ลงทะเบียน */
+        /* กล่องฟอร์ม ล็อกอิน */
         .auth-container {
             width: 100%;
             max-width: 400px;
@@ -102,7 +102,6 @@
             border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
             cursor: pointer; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
         }
-        .btn-primary:active { transform: scale(0.99); }
 
         .auth-switch { margin-top: 16px; font-size: 13px; color: #64748b; }
         .auth-switch button { background: none; border: none; color: #1d4ed8; font-weight: 700; cursor: pointer; }
@@ -116,7 +115,6 @@
             gap: 14px;
         }
 
-        /* ส่วนบน Navbar */
         .app-header {
             background: #1d4ed8; color: white; padding: 16px;
             border-radius: 20px; display: flex; justify-content: space-between;
@@ -156,10 +154,22 @@
         .radio-label:has(input:checked).income { background: #eff6ff; border-color: #1d4ed8; color: #1d4ed8; }
         .radio-label:has(input:checked).expense { background: #fef2f2; border-color: #ef4444; color: #ef4444; }
 
-        .person-balance-box {
-            padding: 10px 12px; background: #f1f5f9; border-radius: 10px;
-            font-size: 12px; font-weight: 700; display: flex; justify-content: space-between; margin-bottom: 12px;
+        /* กล่องโชว์ บวกลบ ยอดเงินสะสมแบบเรียลไทม์ */
+        .calc-box {
+            background: #f8fafc;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 13px;
         }
+        .calc-row { display: flex; justify-content: space-between; font-weight: 500; }
+        .calc-row.total-row { border-top: 1px solid #e2e8f0; padding-top: 6px; font-weight: 700; margin-top: 2px; }
+        .text-blue { color: #2563eb; }
+        .text-red { color: #dc2626; }
 
         /* ส่วนของตารางรายการ */
         .list-card { background: white; padding: 16px; border-radius: 20px; border: 1.5px solid #e2e8f0; }
@@ -200,7 +210,6 @@
 
     <!-- 1. หน้าจอเข้าสู่ระบบ (Login) -->
     <div id="login-section" class="auth-container">
-        <!-- แสดงรูปโปรไฟล์เจ้าของหอพักทันทีในหน้าล็อกอิน -->
         <img class="auth-profile-img" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" alt="หอ 8 ไผ่สีทอง">
         <h2>หอ 8 ไผ่สีทอง</h2>
         <p class="subtitle">ระบบจัดการบัญชีผู้ดูแลระบบ</p>
@@ -221,7 +230,7 @@
         </div>
     </div>
 
-    <!-- 2. หน้าจอลงทะเบียนเพิ่ม (Register) -->
+    <!-- 2. หน้าจอลงทะเบียนเพิ่ม -->
     <div id="register-section" class="auth-container hidden">
         <div class="auth-logo">✍️</div>
         <h2>ลงทะเบียนแอดมินร่วม</h2>
@@ -243,10 +252,9 @@
         </div>
     </div>
 
-    <!-- 3. หน้าจอหลักจัดการเงินหลังล็อกอิน (Main Dashboard) -->
+    <!-- 3. หน้าจอหลักจัดการเงินหลังล็อกอิน -->
     <div id="main-section" class="main-container">
         
-        <!-- ส่วนหัวแอปแสดงรูปโปรไฟล์ -->
         <div class="app-header">
             <div class="user-info">
                 <img id="user-avatar" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" class="user-avatar" alt="โปรไฟล์">
@@ -258,7 +266,6 @@
             <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-power-off"></i> ออกระบบ</button>
         </div>
 
-        <!-- การ์ดยอดเงินรวม -->
         <div id="balance-card" class="balance-card">
             <p>ยอดเงินคงเหลือรวมทั้งหมดในระบบ</p>
             <h2 id="total-balance">0.00 บาท</h2>
@@ -272,7 +279,7 @@
                 
                 <div class="input-group">
                     <label>เลขห้อง / หมายเลข</label>
-                    <input type="number" id="num-id" oninput="checkCurrentBalance()" required placeholder="ตัวอย่างเช่น 101, 802">
+                    <input type="number" id="num-id" oninput="calculateRealtime()" required placeholder="ตัวอย่างเช่น 101, 802">
                 </div>
 
                 <div class="input-group">
@@ -287,22 +294,33 @@
                     </div>
                 </div>
 
-                <div class="person-balance-box">
-                    <span>ยอดสะสมของห้องนี้:</span>
-                    <span id="current-person-balance">0.00 บาท</span>
+                <!-- กล่องคำนวณบวกลบเงินให้ทันทีอัตโนมัติ -->
+                <div class="calc-box">
+                    <div class="calc-row">
+                        <span>💰 เงินเดิมสะสมของห้องนี้:</span>
+                        <span id="calc-old-balance" class="text-blue">0.00 บาท</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>⚡ รายการใหม่ที่กำลังกรอก:</span>
+                        <span id="calc-new-action">0.00 บาท</span>
+                    </div>
+                    <div class="calc-row total-row">
+                        <span>📊 ยอดสุทธิที่จะเกิดขึ้นหลังบันทึก:</span>
+                        <div id="calc-result" style="color: #334155;">0.00 บาท</div>
+                    </div>
                 </div>
 
                 <div class="input-group">
                     <label>จำนวนเงิน (บาท)</label>
-                    <input type="number" step="any" id="amount" required placeholder="0.00">
+                    <input type="number" step="any" id="amount" oninput="calculateRealtime()" required placeholder="0.00">
                 </div>
 
                 <div class="radio-group">
                     <label class="radio-label income">
-                        <input type="radio" name="money-type" value="income" checked> ➕ บวกเงินเข้า
+                        <input type="radio" name="money-type" value="income" onchange="calculateRealtime()" checked> ➕ บวกเงินเข้า
                     </label>
                     <label class="radio-label expense">
-                        <input type="radio" name="money-type" value="expense"> ➖ หักเงินออก
+                        <input type="radio" name="money-type" value="expense" onchange="calculateRealtime()"> ➖ หักเงินออก
                     </label>
                 </div>
 
@@ -313,7 +331,6 @@
             </form>
         </div>
 
-        <!-- รายการสรุปด้านล่าง -->
         <div class="list-card">
             <div class="list-header">
                 <h4 id="table-title">ประวัติรายการทั้งหมด</h4>
@@ -326,9 +343,7 @@
                 <button onclick="changeTab('expense')" id="tab-expense" class="tab-btn">เงินลบ</button>
             </div>
 
-            <div id="data-list-container" class="data-list">
-                <!-- ข้อมูลจะแสดงที่นี่ -->
-            </div>
+            <div id="data-list-container" class="data-list"></div>
         </div>
 
     </div>
@@ -336,7 +351,6 @@
     <script>
         const bossPhoto = "https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5";
         
-        // สร้างบัญชี admin ตั้งต้นไว้ในเครื่องทันที
         if(!localStorage.getItem("user_acc_admin")) {
             localStorage.setItem("user_acc_admin", JSON.stringify({ user: "admin", pass: "1234", avatar: bossPhoto }));
         }
@@ -389,7 +403,7 @@
             if (storedAccount) {
                 const account = JSON.parse(storedAccount);
                 if (account.pass === pass) {
-                    currentSessionKey = `pai_see_thong_v5_${user}`;
+                    currentSessionKey = `pai_see_thong_v6_${user}`;
                     document.getElementById('display-user').innerText = user;
                     document.getElementById('user-avatar').src = account.avatar;
                     showSection('main-section');
@@ -406,16 +420,58 @@
             updateUI();
         }
 
-        function checkCurrentBalance() {
+        // 🌟 ฟังก์ชันคำนวณเงินอัตโนมัติแบบเรียลไทม์ (หักลบให้อัตโนมัติทันที)
+        function calculateRealtime() {
             const inputNumId = document.getElementById('num-id').value.trim();
-            const balanceDisplay = document.getElementById('current-person-balance');
-            if(!inputNumId) { balanceDisplay.innerText = "0.00 บาท"; return; }
+            const inputAmountStr = document.getElementById('amount').value;
+            const moneyType = document.querySelector('input[name="money-type"]:checked').value;
+            const editId = document.getElementById('edit-id').value;
 
-            let personTotal = dataList
-                .filter(item => item.numId.toString() === inputNumId.toString())
+            const oldBalEl = document.getElementById('calc-old-balance');
+            const newActEl = document.getElementById('calc-new-action');
+            const resultEl = document.getElementById('calc-result');
+
+            if (!inputNumId) {
+                oldBalEl.innerText = "0.00 บาท";
+                newActEl.innerText = "0.00 บาท";
+                resultEl.innerText = "0.00 บาท";
+                resultEl.style.color = "#334155";
+                return;
+            }
+
+            // 1. หาเงินเดิมที่มีอยู่ในห้องนั้น (ถ้าอยู่ในโหมดแก้ไข ให้ข้ามรายการตัวเองไปก่อนเพื่อไม่ให้คำนวณซ้ำ)
+            let oldTotal = dataList
+                .filter(item => item.numId.toString() === inputNumId.toString() && item.id !== parseInt(editId))
                 .reduce((sum, item) => sum + item.amount, 0);
+            
+            oldBalEl.innerText = `${oldTotal.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
 
-            balanceDisplay.innerText = `${personTotal.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
+            // 2. ดึงจำนวนเงินที่กำลังพิมพ์อยู่ปัจจุบัน
+            let currentAmount = parseFloat(inputAmountStr);
+            if (isNaN(currentAmount)) currentAmount = 0;
+
+            // 3. กำหนดว่าเป็น บวกเงิน หรือ หักเงินออก
+            if (moneyType === 'expense') {
+                currentAmount = -Math.abs(currentAmount);
+                newActEl.innerText = `-${Math.abs(currentAmount).toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
+                newActEl.className = "text-red";
+            } else {
+                currentAmount = Math.abs(currentAmount);
+                newActEl.innerText = `+${currentAmount.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
+                newActEl.className = "text-blue";
+            }
+
+            // 4. บวกลบคำนวณยอดสุทธิอัตโนมัติ
+            let finalResult = oldTotal + currentAmount;
+            resultEl.innerText = `${finalResult.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
+            
+            if (finalResult > 0) {
+                resultEl.style.color = "#2563eb"; // สีน้ำเงินเมื่อยอดเป็นบวก
+            } else if (finalResult < 0) {
+                resultEl.style.color = "#dc2626"; // สีแดงเมื่อยอดติดลบ
+            } else {
+                resultEl.style.color = "#334155";
+            }
         }
 
         function handleSaveData(e) {
@@ -454,7 +510,7 @@
                 document.getElementById('btn-submit').innerText = "อัปเดตข้อมูล";
                 document.getElementById('btn-submit').style.background = "#f59e0b";
                 document.getElementById('btn-cancel-edit').classList.remove('hidden');
-                checkCurrentBalance();
+                calculateRealtime();
             }
         }
 
@@ -481,7 +537,7 @@
             document.getElementById('btn-submit').innerText = "บันทึกข้อมูลธุรกรรม";
             document.getElementById('btn-submit').style.background = "#1d4ed8";
             document.getElementById('btn-cancel-edit').classList.add('hidden');
-            checkCurrentBalance();
+            calculateRealtime();
         }
 
         function updateUI() {
