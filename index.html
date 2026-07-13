@@ -2,76 +2,107 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบัญชีหอพัก - โครงสร้างใหม่</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>ระบบบัญชีหอพัก</title>
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-lg">
+<body class="bg-gray-50 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
         <!-- Header -->
-        <div class="bg-blue-600 text-white p-4 rounded-lg flex justify-between items-center mb-6">
+        <header class="bg-blue-600 p-6 text-white flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold">หอ 8 ไผ่สีทอง | ระบบบัญชีหอพัก</h1>
-                <p>ผู้ดูแลระบบ: Vadaw216</p>
+                <h1 class="text-2xl font-bold">หอ 8 ไผ่สีทอง</h1>
+                <p class="text-blue-100">ระบบจัดการบัญชีรายรับ-รายจ่าย</p>
             </div>
             <div class="text-right">
                 <p class="text-sm">ยอดเงินคงเหลือรวม</p>
-                <p class="text-2xl font-bold" id="totalBalance">0.00 บาท</p>
+                <div id="total-balance" class="text-3xl font-bold">0.00 บาท</div>
             </div>
-        </div>
+        </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Form -->
-            <div>
-                <h2 class="font-bold mb-4">บันทึกข้อมูลธุรกรรม</h2>
-                <input type="text" id="room" placeholder="เลขที่ห้อง" class="w-full border p-2 mb-2 rounded">
-                <input type="text" id="name" placeholder="ชื่อ-นามสกุล" class="w-full border p-2 mb-2 rounded">
-                <input type="number" id="amount" placeholder="0.00" class="w-full border p-2 mb-4 rounded">
+            <div class="md:col-span-1 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <h2 class="font-bold mb-4 text-gray-700">บันทึกรายการ</h2>
+                <input type="text" id="room" placeholder="เลขห้อง" class="w-full p-2 border rounded mb-2">
+                <input type="text" id="name" placeholder="ชื่อ-นามสกุล" class="w-full p-2 border rounded mb-2">
+                <input type="number" id="amount" placeholder="จำนวนเงิน" class="w-full p-2 border rounded mb-4">
+                
                 <div class="flex gap-2">
-                    <button onclick="addTransaction(true)" class="bg-blue-600 text-white px-4 py-2 rounded">บวกเงิน</button>
-                    <button onclick="addTransaction(false)" class="bg-red-500 text-white px-4 py-2 rounded">รายจ่าย</button>
+                    <button onclick="saveData('income')" class="flex-1 bg-green-600 text-white py-2 rounded hover:bg-green-700">รับ (+)</button>
+                    <button onclick="saveData('expense')" class="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700">จ่าย (-)</button>
                 </div>
             </div>
 
-            <!-- List -->
-            <div>
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b">
-                            <th class="text-left">เลขที่</th>
-                            <th class="text-left">ชื่อ</th>
-                            <th class="text-right">จำนวน</th>
+            <!-- Table -->
+            <div class="md:col-span-2">
+                <table class="w-full text-left">
+                    <thead class="border-b">
+                        <tr>
+                            <th class="p-2">ห้อง</th>
+                            <th class="p-2">ชื่อ</th>
+                            <th class="p-2 text-right">จำนวน</th>
+                            <th class="p-2 text-center">ลบ</th>
                         </tr>
                     </thead>
-                    <tbody id="transactionList"></tbody>
+                    <tbody id="transaction-body"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <script>
-        let balance = 0;
-        function addTransaction(isIncome) {
-            const amount = parseFloat(document.getElementById('amount').value);
-            const name = document.getElementById('name').value;
-            const room = document.getElementById('room').value;
+        let transactions = JSON.parse(localStorage.getItem('my_ledger')) || [];
+
+        function render() {
+            const tbody = document.getElementById('transaction-body');
+            const totalEl = document.getElementById('total-balance');
+            tbody.innerHTML = '';
             
-            if (!amount || !name) return alert("กรุณากรอกข้อมูลให้ครบ");
-
-            const finalAmount = isIncome ? amount : -amount;
-            balance += finalAmount;
-
-            const tbody = document.getElementById('transactionList');
-            tbody.innerHTML += `
-                <tr class="border-b">
-                    <td>${room}</td>
-                    <td>${name}</td>
-                    <td class="text-right ${isIncome ? 'text-blue-600' : 'text-red-500'}">
-                        ${isIncome ? '+' : ''}${finalAmount.toFixed(2)}
-                    </td>
-                </tr>
-            `;
-            document.getElementById('totalBalance').innerText = balance.toFixed(2) + " บาท";
+            let total = 0;
+            transactions.forEach((t, index) => {
+                total += t.amount;
+                tbody.innerHTML += `
+                    <tr class="border-b">
+                        <td class="p-2">${t.room}</td>
+                        <td class="p-2">${t.name}</td>
+                        <td class="p-2 text-right font-bold ${t.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                            ${t.amount.toLocaleString()}
+                        </td>
+                        <td class="p-2 text-center">
+                            <button onclick="deleteData(${index})" class="text-red-400 hover:text-red-600">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            totalEl.innerText = total.toLocaleString() + ' บาท';
+            localStorage.setItem('my_ledger', JSON.stringify(transactions));
         }
+
+        function saveData(type) {
+            const room = document.getElementById('room').value;
+            const name = document.getElementById('name').value;
+            let amount = parseFloat(document.getElementById('amount').value);
+            
+            if(!room || !name || !amount) return alert("กรุณากรอกข้อมูลให้ครบ");
+
+            amount = (type === 'expense') ? -amount : amount;
+            transactions.push({ room, name, amount });
+            render();
+            // ล้างฟอร์ม
+            document.getElementById('room').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('amount').value = '';
+        }
+
+        function deleteData(index) {
+            transactions.splice(index, 1);
+            render();
+        }
+
+        // โหลดข้อมูลเมื่อเปิดหน้าเว็บ
+        render();
     </script>
 </body>
 </html>
