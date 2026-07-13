@@ -2,35 +2,27 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>หอ 8 ไผ่สีทอง - ระบบบัญชี</title>
+    <title>ระบบจัดการการเงิน หอ 8 ไผ่สีทอง</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; background: #f4f4f4; }
-        .container { background: white; padding: 20px; border-radius: 10px; width: 100%; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input, select, button { width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; }
-        .hidden { display: none; }
+        body { font-family: 'Sarabun', sans-serif; background: #f1f5f9; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        input, select, button { width: 100%; margin: 8px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { background: #1e40af; color: white; border: none; cursor: pointer; font-weight: bold; }
+        #list { margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
     </style>
 </head>
 <body>
 
-<div id="app" class="container">
-    <h3>เข้าสู่ระบบ</h3>
-    <input type="text" id="user" value="admin" placeholder="ชื่อผู้ใช้">
-    <input type="password" id="pass" value="1234" placeholder="รหัสผ่าน">
-    <button onclick="login()">เข้าใช้งาน</button>
-</div>
-
-<div id="dashboard" class="container hidden">
+<div class="container">
     <h3>บัญชีหอพัก</h3>
-    <h2 id="total">0.00</h2>
+    <h2 id="total">0.00 บาท</h2>
     <input type="number" id="num" placeholder="เลขห้อง">
-    <input type="text" id="name" placeholder="ชื่อผู้เช่า">
+    <input type="text" id="name" placeholder="ชื่อ">
     <input type="number" id="amount" placeholder="จำนวนเงิน">
-    
     <select id="type">
         <option value="plus">บวกเงิน</option>
         <option value="minus">ลบเงิน</option>
     </select>
-    
     <button onclick="save()">บันทึก</button>
     <div id="list"></div>
 </div>
@@ -38,23 +30,14 @@
 <script>
     let data = JSON.parse(localStorage.getItem('ledger_data') || '[]');
 
-    function login() {
-        if(document.getElementById('user').value === 'admin' && document.getElementById('pass').value === '1234') {
-            document.getElementById('app').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
-            render();
-        } else {
-            alert('รหัสผิด');
-        }
-    }
-
     function save() {
         const num = document.getElementById('num').value;
         const name = document.getElementById('name').value;
+        // ใช้ Math.abs เพื่อดึงแค่ตัวเลขมาคำนวณ ป้องกันปัญหาเครื่องหมายติดลบ
         const amount = Math.abs(parseFloat(document.getElementById('amount').value) || 0);
         const type = document.getElementById('type').value;
 
-        if(!num || !name || amount <= 0) return alert('กรอกข้อมูลให้ครบ');
+        if(!num || !name || amount === 0) return alert('กรอกข้อมูลให้ครบ');
 
         data.push({ num, name, amount, type });
         localStorage.setItem('ledger_data', JSON.stringify(data));
@@ -65,12 +48,15 @@
         let total = 0;
         let html = '';
         data.forEach(item => {
+            // คำนวณแบบตรงไปตรงมา: บวกคือบวก ลบคือลบ
             total += (item.type === 'plus' ? item.amount : -item.amount);
             html += `<p>${item.num}: ${item.type === 'plus' ? '+' : '-'}${item.amount}</p>`;
         });
-        document.getElementById('total').innerText = total.toFixed(2) + ' บาท';
+        document.getElementById('total').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2}) + ' บาท';
         document.getElementById('list').innerHTML = html;
     }
+
+    render(); // เรียกให้แสดงผลทันทีที่โหลดหน้าเว็บ
 </script>
 
 </body>
