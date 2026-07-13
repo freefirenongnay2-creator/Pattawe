@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบัญชีหอพัก - หอ 8 ไผ่สีทอง</title>
+    
+    <!-- ================= ตั้งค่าเพื่อให้รองรับการติดตั้งเป็นแอป (PWA) ================= -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="หอ 8 ไผ่สีทอง">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/616/616421.png">
+    <meta name="theme-color" content="#1d4ed8">
+
+    <!-- Web Manifest แบบ Inline เพื่อให้โหลดเป็นแอปได้ในไฟล์เดียว -->
+    <link rel="manifest" href='data:application/json,{"name":"ระบบบัญชีหอพัก หอ 8 ไผ่สีทอง","short_name":"หอ 8 ไผ่สีทอง","description":"ระบบจัดการบัญชีและรายชื่อผู้พักอาศัย","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#1d4ed8","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/616/616421.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+
+    <!-- Tailwind CSS สำหรับดีไซน์หรูหรา รองรับทุกหน้าจอ -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome สำหรับไอคอนระบบ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-center items-center p-4">
+
+    <!-- ================= ปุ่มแจ้งเตือนให้ติดตั้งแอป (จะโชว์เมื่อรองรับ) ================= -->
+    <div id="pwa-install-banner" class="hidden w-full max-w-md bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-4 shadow-sm flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-800">ติดตั้งแอปพลิเคชัน</h4>
+                <p class="text-xs text-slate-500">โหลดลงมือถือ/คอมพิวเตอร์ เพื่อความสะดวก</p>
+            </div>
+        </div>
+        <button id="btn-pwa-install" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition cursor-pointer">
+            <i class="fa-solid fa-download mr-1"></i> โหลดแอป
+        </button>
+    </div>
+
+    <!-- ================= 1. หน้าจอเข้าสู่ระบบ (Login) ================= -->
+    <div id="login-section" class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-200/80 transition-all duration-300">
+        <div class="text-center mb-8">
+            <div class="inline-block relative mb-4">
+                <img id="login-avatar" src="" alt="ผู้ดูแลระบบ" class="w-24 h-24 rounded-full object-cover border-4 border-blue-700 shadow-lg mx-auto fallback-image">
+                <div class="absolute bottom-0 right-1 w-6 h-6 bg-blue-700 rounded-full border-2 border-white flex items-center justify-center text-white text-[10px]">
+                    <i class="fa-solid fa-shield"></i>
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800">หอ 8 ไผ่สีทอง</h2>
+            <p class="text-slate-500 text-sm mt-1">ระบบจัดการบัญชีและรายชื่อผู้พักอาศัย</p>
+        </div>
+
+        <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">ชื่อผู้ใช้งาน</label>
+                <input type="text" id="username" required class="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition" placeholder="ระบุชื่อบัญชี">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">รหัสผ่าน</label>
+                <input type="password" id="password" required class="w-full px-4 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition" placeholder="••••••••">
+            </div>
+            <button type="submit" class="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-medium rounded-xl shadow-lg shadow-blue-700/20 transition cursor-pointer flex items-center justify-center gap-2">
+                <span>เข้าสู่ระบบ</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </form>
+        
+        <div class="text-center mt-6 pt-5 border-t border-slate-100">
+            <p class="text-xs text-slate-500">ยังไม่มีบัญชีผู้ดูแลระบบ? <button onclick="showSection('register-section')" class="text-blue-700 font-bold hover:underline cursor-pointer">ลงทะเบียนที่นี่</button></p>
+        </div>
+    </div>
+
+
+    <!-- ================= 2. หน้าจอลงทะเบียน (Register) ================= -->
+    <div id="register-section" class="hidden w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-200/80 transition-all duration-300">
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-600 text-white mb-3 text-xl shadow-lg shadow-emerald-100">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800">ลงทะเบียนผู้ดูแลระบบ</h2>
+            <p class="text-slate-500 text-xs mt-1">สร้างบัญชีเพื่อเข้าใช้งานระบบ หอ 8 ไผ่สีทอง</p>
+        </div>
+
+        <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">ชื่อผู้ใช้งาน (Username)</label>
+                <input type="text" id="reg-username" required class="w-full px-3 py-2 border border-slate-200 rounded-xl outline-none focus:border-emerald-600 text-sm" placeholder="ภาษาอังกฤษหรือตัวเลข">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">รหัสผ่าน (Password)</label>
+                <input type="password" id="reg-password" required class="w-full px-3 py-2 border border-slate-200 rounded-xl outline-none focus:border-emerald-600 text-sm" placeholder="กำหนดรหัสผ่าน">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">ลิงก์รูปภาพโปรไฟล์อื่น ๆ (ระบุหรือไม่ระบุก็ได้)</label>
+                <input type="url" id="reg-avatar" class="w-full px-3 py-2 border border-slate-200 rounded-xl outline-none focus:border-emerald-600 text-sm" placeholder="หากมีลิงก์รูปอื่นสามารถวางตรงนี้ได้">
+                <p class="text-[10px] text-slate-400 mt-1"><i class="fa-solid fa-info-circle"></i> หากปล่อยว่างไว้ ระบบจะใช้รูปถ่ายปัจจุบันของพี่ที่ตั้งไว้ให้เป็นหลักทันที</p>
+            </div>
+            
+            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl shadow-md transition cursor-pointer text-sm">
+                <i class="fa-solid fa-user-check mr-1"></i> ยืนยันการลงทะเบียน
+            </button>
+        </form>
+        
+        <div class="text-center mt-5 pt-4 border-t border-slate-100">
+            <button onclick="showSection('login-section')" class="text-xs text-slate-500 hover:text-blue-700 font-medium cursor-pointer">
+                <i class="fa-solid fa-arrow-left mr-1"></i> กลับไปหน้าเข้าสู่ระบบ
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ================= 3. หน้าจอหลัก (Main Dashboard) ================= -->
+    <div id="main-section" class="hidden w-full max-w-5xl bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200/80">
+        
+        <!-- ส่วนหัว Navbar -->
+        <div class="bg-blue-700 px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-b border-blue-800">
+            <div class="flex items-center gap-3">
+                <img id="user-avatar" src="" alt="ผู้ดูแลระบบ" class="w-11 h-11 rounded-xl object-cover border-2 border-white shadow-sm fallback-image">
+                <div>
+                    <h1 class="text-base font-bold text-white tracking-wide">หอ 8 ไผ่สีทอง <span class="text-xs font-normal text-blue-200">| ระบบบัญชีหอพัก</span></h1>
+                    <p class="text-blue-100 text-xs">ผู้ดูแลระบบ: <span id="display-user" class="text-white font-semibold underline decoration-wavy decoration-amber-400"></span></p>
+                </div>
+            </div>
+            
+            <!-- สรุปยอดเงินคงเหลือรวม -->
+            <div id="balance-box" class="bg-blue-800 px-5 py-2 rounded-xl border border-blue-600/50 text-center sm:text-right min-w-[180px]">
+                <span class="text-blue-200 text-xs block">ยอดเงินคงเหลือรวม</span>
+                <span id="total-balance" class="text-xl font-bold text-white">0.00 บาท</span>
+                <span id="negative-alert" class="text-[10px] font-bold text-red-300 block hidden">⚠️ บัญชีติดลบ</span>
+            </div>
+
+            <button onclick="handleLogout()" class="px-4 py-2 bg-blue-800 hover:bg-white hover:text-blue-700 text-white border border-blue-600 rounded-xl text-xs font-medium transition cursor-pointer">
+                <i class="fa-solid fa-power-off mr-1"></i> ออกจากระบบ
+            </button>
+        </div>
+
+        <!-- พื้นที่กรอกข้อมูลและตารางแสดงผล -->
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white">
+            
+            <!-- ฟอร์มบันทึก / แก้ไขข้อมูล (ฝั่งซ้าย) -->
+            <div class="lg:col-span-1 bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
+                <h3 id="form-title" class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-file-pen text-blue-700"></i>
+                    <span>บันทึกข้อมูลธุรกรรม</span>
+                </h3>
+                
+                <form id="finance-form" onsubmit="handleSaveData(event)" class="space-y-4">
+                    <input type="hidden" id="edit-id">
+
+                    <!-- ช่องที่ 1: เลขที่ -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ช่องที่ 1: เลขที่ / เลขห้อง</label>
+                        <input type="number" id="num-id" oninput="checkCurrentBalance()" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-sm" placeholder="เช่น 101, 805">
+                    </div>
+
+                    <!-- ช่องที่ 2: ชื่อผู้พัก -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ช่องที่ 2: คำนำหน้า และ ชื่อ-นามสกุล</label>
+                        <div class="flex gap-2">
+                            <select id="title-name" class="px-2 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-sm text-slate-700">
+                                <option value="นาย">นาย</option>
+                                <option value="นางสาว">น.ส.</option>
+                                <option value="นาง">นาง</option>
+                                <option value="เด็กชาย">ด.ช.</option>
+                                <option value="เด็กหญิง">ด.ญ.</option>
+                            </select>
+                            <input type="text" id="fullname" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-sm" placeholder="ชื่อ-นามสกุล">
+                        </div>
+                    </div>
+
+                    <!-- ช่องแสดงยอดปัจจุบัน -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ยอดปัจจุบันของผู้พักอาศัยคนนี้</label>
+                        <div class="w-full px-3 py-2 bg-slate-200/60 border border-slate-200 text-slate-700 rounded-xl text-sm font-bold font-mono flex justify-between items-center select-none">
+                            <span>💰 ยอดคงเหลือสะสม:</span>
+                            <span id="current-person-balance">0.00 บาท</span>
+                        </div>
+                    </div>
+
+                    <!-- ช่องที่ 3: จำนวนเงินและการคำนวณ -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ช่องที่ 3: จำนวนเงินที่ต้องการบันทึก</label>
+                        <input type="number" step="any" id="amount" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-sm mb-2" placeholder="0.00">
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center justify-center p-2.5 bg-white border border-slate-200 rounded-xl cursor-pointer text-xs font-bold text-slate-600 select-none has-[:checked]:bg-blue-50 has-[:checked]:border-blue-600 has-[:checked]:text-blue-700">
+                                <input type="radio" name="money-type" value="income" checked class="hidden">
+                                <i class="fa-solid fa-circle-plus mr-1 text-blue-600"></i> มีเงิน (บวกเงิน)
+                            </label>
+                            <label class="flex items-center justify-center p-2.5 bg-white border border-slate-200 rounded-xl cursor-pointer text-xs font-bold text-slate-600 select-none has-[:checked]:bg-rose-50 has-[:checked]:border-rose-500 has-[:checked]:text-rose-700">
+                                <input type="radio" name="money-type" value="expense" class="hidden">
+                                <i class="fa-solid fa-circle-minus mr-1 text-rose-500"></i> รายลบ (ลบเงิน)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 pt-2">
+                        <button type="submit" id="btn-submit" class="w-full py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium rounded-xl transition cursor-pointer shadow-md">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> บันทึกข้อมูล
+                        </button>
+                        <button type="button" id="btn-cancel-edit" onclick="resetForm()" class="hidden px-3 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium rounded-xl transition cursor-pointer">
+                            ยกเลิก
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ตารางแสดงผลรายการข้อมูล (ฝั่งขวา) -->
+            <div class="lg:col-span-2 flex flex-col">
+                
+                <!-- แถบเลือกแยกประเภทแสดงผล -->
+                <div class="flex bg-slate-100 p-1 rounded-xl mb-4 gap-1 border border-slate-200/50">
+                    <button onclick="changeTab('all')" id="tab-all" class="flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer bg-white text-blue-700 shadow-sm border border-slate-200/20">
+                        <i class="fa-solid fa-list mr-1"></i> ทั้งหมด
+                    </button>
+                    <button onclick="changeTab('income')" id="tab-income" class="flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer text-slate-600 hover:bg-white/60">
+                        <i class="fa-solid fa-circle-plus mr-1 text-blue-600"></i> มีเงิน (บวกเงิน)
+                    </button>
+                    <button onclick="changeTab('expense')" id="tab-expense" class="flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer text-slate-600 hover:bg-white/60">
+                        <i class="fa-solid fa-circle-minus mr-1 text-rose-500"></i> รายลบ (ลบเงิน)
+                    </button>
+                </div>
+
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-slate-400"></i>
+                        <span id="table-title">รายการข้อมูลทั้งหมด</span>
+                    </h3>
+                    <span id="list-count" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-100">0 รายการ</span>
+                </div>
+
+                <!-- ตารางข้อมูล -->
+                <div class="overflow-x-auto border border-slate-200/80 rounded-2xl shadow-inner max-h-[430px]">
+                    <table class="w-full text-left border-collapse bg-white">
+                        <thead class="bg-slate-50 sticky top-0 border-b border-slate-200/80 z-10">
+                            <tr>
+                                <th class="p-3 text-xs font-bold text-slate-500 uppercase text-center w-16">เลขที่</th>
+                                <th class="p-3 text-xs font-bold text-slate-500 uppercase">ชื่อ - นามสกุล</th>
+                                <th class="p-3 text-xs font-bold text-slate-500 uppercase text-right">จำนวนเงิน</th>
+                                <th class="p-3 text-xs font-bold text-slate-500 uppercase text-center w-24">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body" class="text-slate-600 text-sm divide-y divide-slate-100">
+                            <!-- ข้อมูลผ่าน JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= 4. ระบบทำงานเบื้องหลัง (JavaScript) ================= -->
+    <script>
+        // ลิงก์รูปถ่ายจาก Facebook ของพี่
+        const defaultBossAvatar = "https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5";
+
+        let currentSessionKey = "";
+        let dataList = [];
+        let currentTab = "all";
+        let deferredPrompt;
+
+        // ------------------ ระบบติดตั้ง PWA ------------------
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // โชว์ปุ่มดาวน์โหลดแอปพลิเคชัน
+            document.getElementById('pwa-install-banner').classList.remove('hidden');
+        });
+
+        document.getElementById('btn-pwa-install').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('pwa-install-banner').classList.add('hidden');
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('pwa-install-banner').classList.add('hidden');
+            alert('ติดตั้งแอปพลิเคชัน หอ 8 ไผ่สีทอง สำเร็จแล้วบนเครื่องของคุณ!');
+        });
+
+        // 🖨️ ลงทะเบียน Service Worker หลอกแบบ Inline เพื่อผ่านเกณฑ์ PWA ให้ปุ่มติดตั้งขึ้น
+        if ('serviceWorker' in navigator) {
+            const swCode = `self.addEventListener("fetch", function(e) {});`;
+            const blob = new Blob([swCode], { type: "text/javascript" });
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl).catch(err => console.log(err));
+        }
+        // ----------------------------------------------------
+
+        document.getElementById('login-avatar').src = defaultBossAvatar;
+
+        document.querySelectorAll('.fallback-image').forEach(img => {
+            img.onerror = function() {
+                this.src = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; 
+            };
+        });
+
+        function showSection(sectionId) {
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('register-section').classList.add('hidden');
+            document.getElementById('main-section').classList.add('hidden');
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function checkCurrentBalance() {
+            const inputNumId = document.getElementById('num-id').value.trim();
+            const balanceDisplay = document.getElementById('current-person-balance');
+            
+            if(!inputNumId) {
+                balanceDisplay.innerText = "0.00 บาท";
+                balanceDisplay.className = "text-slate-700 font-bold";
+                return;
+            }
+
+            let personTotal = dataList
+                .filter(item => item.numId.toString() === inputNumId.toString())
+                .reduce((sum, item) => sum + item.amount, 0);
+
+            balanceDisplay.innerText = `${personTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} บาท`;
+            
+            if (personTotal > 0) {
+                balanceDisplay.className = "text-blue-600 font-bold";
+            } else if (personTotal < 0) {
+                balanceDisplay.className = "text-rose-500 font-bold";
+            } else {
+                balanceDisplay.className = "text-slate-700 font-bold";
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const user = document.getElementById('reg-username').value.trim();
+            const pass = document.getElementById('reg-password').value;
+            let avatar = document.getElementById('reg-avatar').value.trim();
+
+            if(!avatar) {
+                avatar = defaultBossAvatar;
+            }
+
+            const accountData = { user, pass, avatar };
+            localStorage.setItem(`user_acc_${user}`, JSON.stringify(accountData));
+
+            alert("ลงทะเบียนผู้ดูแลระบบสำเร็จแล้ว!");
+            document.getElementById('register-form').reset();
+            showSection('login-section');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+
+            const storedAccount = localStorage.getItem(`user_acc_${user}`);
+            
+            if (storedAccount) {
+                const account = JSON.parse(storedAccount);
+                if (account.pass === pass) {
+                    currentSessionKey = `pai_see_thong_v3_${user}`;
+                    document.getElementById('display-user').innerText = user;
+                    document.getElementById('user-avatar').src = account.avatar;
+                    
+                    showSection('main-section');
+                    fetchData();
+                    return;
+                }
+            }
+            alert("ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง!");
+        }
+
+        function fetchData() {
+            const data = localStorage.getItem(currentSessionKey);
+            dataList = data ? JSON.parse(data) : [];
+            updateUI();
+            checkCurrentBalance();
+        }
+
+        function changeTab(tab) {
+            currentTab = tab;
+            const tabs = ['all', 'income', 'expense'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                el.className = "flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer text-slate-600 hover:bg-white/60";
+            });
+
+            const activeTab = document.getElementById(`tab-${tab}`);
+            activeTab.className = "flex-1 py-2 text-xs font-bold rounded-lg transition cursor-pointer bg-white text-blue-700 shadow-sm border border-slate-200/60";
+
+            const titleEl = document.getElementById('table-title');
+            if(tab === 'all') titleEl.innerText = "รายการข้อมูลทั้งหมด";
+            if(tab === 'income') titleEl.innerText = "รายการเงินเข้า (บวกเงิน)";
+            if(tab === 'expense') titleEl.innerText = "รายการเงินออก (ลบเงิน)";
+
+            updateUI();
+        }
+
+        function handleSaveData(e) {
+            e.preventDefault();
+            const editId = document.getElementById('edit-id').value;
+            const numId = document.getElementById('num-id').value;
+            const titleName = document.getElementById('title-name').value;
+            const fullname = document.getElementById('fullname').value.trim();
+            let amount = parseFloat(document.getElementById('amount').value);
+            const moneyType = document.querySelector('input[name="money-type"]:checked').value;
+
+            if (moneyType === 'expense') {
+                amount = -Math.abs(amount);
+            } else {
+                amount = Math.abs(amount);
+            }
+
+            if (editId) {
+                dataList = dataList.map(item => {
+                    if (item.id === parseInt(editId)) {
+                        return { ...item, numId, titleName, fullname, amount };
+                    }
+                    return item;
+                });
+            } else {
+                const newData = {
+                    id: Date.now(),
+                    numId: numId,
+                    titleName: titleName,
+                    fullname: fullname,
+                    amount: amount
+                };
+                dataList.push(newData);
+            }
+
+            saveToStorage();
+            updateUI();
+            resetForm();
+        }
+
+        function prepareEdit(id) {
+            const item = dataList.find(i => i.id === id);
+            if (item) {
+                document.getElementById('edit-id').value = item.id;
+                document.getElementById('num-id').value = item.numId;
+                document.getElementById('title-name').value = item.titleName;
+                document.getElementById('fullname').value = item.fullname;
+                document.getElementById('amount').value = Math.abs(item.amount);
+
+                if (item.amount >= 0) {
+                    document.querySelector('input[name="money-type"][value="income"]').checked = true;
+                } else {
+                    document.querySelector('input[name="money-type"][value="expense"]').checked = true;
+                }
+
+                document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-user-pen text-amber-500"></i> กำลังแก้ไขข้อมูล`;
+                document.getElementById('btn-submit').className = "w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-xl transition cursor-pointer shadow-md";
+                document.getElementById('btn-submit').innerHTML = `<i class="fa-solid fa-check mr-1"></i> อัปเดตข้อมูล`;
+                document.getElementById('btn-cancel-edit').classList.remove('hidden');
+                
+                checkCurrentBalance();
+            }
+        }
+
+        function deleteItem(id) {
+            if (confirm("คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?")) {
+                dataList = dataList.filter(item => item.id !== id);
+                saveToStorage();
+                updateUI();
+                resetForm();
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
+        }
+
+        function resetForm() {
+            document.getElementById('finance-form').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('form-title').innerHTML = `<i class="fa-solid fa-file-pen text-blue-700"></i> บันทึกข้อมูลธุรกรรม`;
+            document.getElementById('btn-submit').className = "w-full py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium rounded-xl transition cursor-pointer shadow-md";
+            document.getElementById('btn-submit').innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> บันทึกข้อมูล`;
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+            document.querySelector('input[name="money-type"][value="income"]').checked = true;
+            checkCurrentBalance();
+        }
+
+        function updateUI() {
+            const tbody = document.getElementById('data-table-body');
+            const counter = document.getElementById('list-count');
+            const totalBalanceEl = document.getElementById('total-balance');
+            const negativeAlertEl = document.getElementById('negative-alert');
+            const balanceBoxEl = document.getElementById('balance-box');
+            
+            tbody.innerHTML = '';
+            let totalBalance = dataList.reduce((sum, item) => sum + item.amount, 0);
+
+            totalBalanceEl.innerText = `${totalBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} บาท`;
+            if (totalBalance >= 0) {
+                totalBalanceEl.className = "text-xl font-bold text-white";
+                negativeAlertEl.classList.add('hidden');
+                balanceBoxEl.className = "bg-blue-800 px-5 py-2 rounded-xl border border-blue-600/50 text-center sm:text-right min-w-[180px]";
+            } else {
+                totalBalanceEl.className = "text-xl font-bold text-red-200";
+                negativeAlertEl.classList.remove('hidden');
+                balanceBoxEl.className = "bg-red-900 px-5 py-2 rounded-xl border border-red-500/40 text-center sm:text-right min-w-[180px]";
+            }
+
+            let filteredList = [...dataList];
+            if (currentTab === 'income') {
+                filteredList = dataList.filter(item => item.amount >= 0);
+            } else if (currentTab === 'expense') {
+                filteredList = dataList.filter(item => item.amount < 0);
+            }
+
+            counter.innerText = `${filteredList.length} รายการ`;
+
+            if (filteredList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-10 text-center text-slate-400 font-medium"><i class="fa-solid fa-folder-open text-3xl block mb-2 text-slate-200"></i>ไม่พบข้อมูลในหมวดหมู่นี้</td></tr>`;
+                return;
+            }
+
+            filteredList.sort((a, b) => parseInt(a.numId) - parseInt(b.numId));
+
+            filteredList.forEach(item => {
+                const isIncome = item.amount >= 0;
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-3 text-center font-bold text-slate-700 bg-slate-50/50">${item.numId}</td>
+                    <td class="p-3 font-medium text-slate-800">${item.titleName}${item.fullname}</td>
+                    <td class="p-3 text-right font-bold font-mono ${isIncome ? 'text-blue-600' : 'text-rose-500'}">
+                        ${isIncome ? '+' : ''}${item.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                    </td>
+                    <td class="p-3 text-center flex justify-center gap-1">
+                        <button onclick="prepareEdit(${item.id})" class="text-slate-400 hover:text-amber-500 p-1.5 hover:bg-amber-50 rounded-lg transition cursor-pointer" title="แก้ไข">
+                            <i class="fa-solid fa-user-pen text-sm"></i>
+                        </button>
+                        <button onclick="deleteItem(${item.id})" class="text-slate-400 hover:text-rose-500 p-1.5 hover:bg-rose-50 rounded-lg transition cursor-pointer" title="ลบ">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function handleLogout() {
+            currentSessionKey = "";
+            dataList = [];
+            currentTab = "all";
+            showSection('login-section');
+            document.getElementById('login-form').reset();
+            resetForm();
+        }
+    </script>
+</body>
+</html>
