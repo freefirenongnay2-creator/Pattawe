@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบบัญชีหอพัก - หอ 8 ไผ่สีทอง</title>
+    <title>ระบบบัญชีหอพัก - หอ 8 ไผ่สีทอง (เวอร์ชันความจริงละเอียด)</title>
     
     <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,172 +12,94 @@
     <link rel="apple-touch-icon" href="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5">
     <meta name="theme-color" content="#1d4ed8">
 
-    <!-- Web Manifest Inline -->
     <link rel="manifest" href='data:application/json,{"name":"ระบบบัญชีหอพัก หอ 8 ไผ่สีทอง","short_name":"หอ 8 ไผ่สีทอง","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#1d4ed8","icons":[{"src":"https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5","sizes":"512x512","type":"image/png"}]}'>
 
-    <!-- Google Fonts & Font Awesome Icons -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Sarabun', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 12px; color: #334155; }
 
-        body {
-            background: #f1f5f9;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 12px;
-            color: #334155;
-        }
+        /* แถบติดตั้งแอป */
+        .pwa-banner { display: none; width: 100%; max-width: 480px; background: #10b981; color: white; padding: 12px; border-radius: 16px; margin-bottom: 12px; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(16,185,129,0.2); }
+        .pwa-btn { background: white; color: #10b981; border: none; padding: 6px 12px; border-radius: 10px; font-weight: 700; font-size: 12px; }
 
-        /* ปุ่มแจ้งเตือนติดตั้งแอป */
-        .pwa-banner {
-            display: none;
-            width: 100%;
-            max-width: 480px;
-            background: #10b981;
-            color: white;
-            padding: 12px;
-            border-radius: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-            justify-content: space-between;
-            align-items: center;
-        }
-        .pwa-banner span { font-size: 13px; font-weight: 500; }
-        .pwa-btn {
-            background: white; color: #10b981; border: none;
-            padding: 6px 12px; border-radius: 10px; font-weight: 700;
-            font-size: 12px; cursor: pointer;
-        }
-
-        /* หน้าเข้าสู่ระบบ */
-        .auth-container {
-            width: 100%;
-            max-width: 400px;
-            background: #ffffff;
-            padding: 28px 20px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 20px;
-            text-align: center;
-        }
-        .auth-profile-img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #1d4ed8;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.15);
-        }
-        .auth-container h2 { font-size: 22px; color: #1e293b; font-weight: 700; margin-bottom: 4px; }
+        /* หน้าล็อกอิน */
+        .auth-container { width: 100%; max-width: 400px; background: #ffffff; padding: 30px 20px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-top: 20px; text-align: center; }
+        .auth-profile-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #1d4ed8; margin-bottom: 12px; }
+        .auth-container h2 { font-size: 22px; color: #1e293b; font-weight: 700; }
         .auth-container p.subtitle { font-size: 13px; color: #64748b; margin-bottom: 24px; }
-
-        .input-group { margin-bottom: 12px; text-align: left; }
+        
+        .input-group { margin-bottom: 14px; text-align: left; }
         .input-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 4px; }
-        .input-group input, .input-group select {
-            width: 100%; padding: 12px 14px; border: 1.5px solid #e2e8f0;
-            border-radius: 12px; font-size: 16px; outline: none; background: #f8fafc;
-        }
+        .input-group input, .input-group select { width: 100%; padding: 12px 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 16px; outline: none; background: #f8fafc; }
         .input-group input:focus { border-color: #1d4ed8; background: #fff; }
-
-        .btn-primary {
-            width: 100%; padding: 14px; background: #1d4ed8; color: white;
-            border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;
-        }
-
+        .btn-primary { width: 100%; padding: 14px; background: #1d4ed8; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
         .auth-switch { margin-top: 16px; font-size: 13px; color: #64748b; }
         .auth-switch button { background: none; border: none; color: #1d4ed8; font-weight: 700; cursor: pointer; }
 
-        /* ================= หน้าหลัก Dashboard ================= */
-        .main-container {
-            width: 100%;
-            max-width: 480px;
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .app-header {
-            background: #1d4ed8; color: white; padding: 14px;
-            border-radius: 20px; display: flex; justify-content: space-between; align-items: center;
-        }
+        /* หน้าหลัก Dashboard */
+        .main-container { width: 100%; max-width: 480px; display: none; flex-direction: column; gap: 12px; }
+        .app-header { background: #1d4ed8; color: white; padding: 14px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .user-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid white; }
         .user-text h3 { font-size: 15px; font-weight: 700; }
         .user-text p { font-size: 11px; color: #bfdbfe; }
         .btn-logout { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; }
 
-        .balance-card {
-            background: #ffffff; padding: 14px; border-radius: 20px; text-align: center; border: 1.5px solid #e2e8f0;
-        }
+        .balance-card { background: #ffffff; padding: 16px; border-radius: 20px; text-align: center; border: 1.5px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.01); }
         .balance-card p { font-size: 12px; color: #64748b; font-weight: 600; }
-        .balance-card h2 { font-size: 24px; color: #1e293b; font-weight: 700; }
-        .balance-card.negative h2 { color: #dc2626; }
+        .balance-card h2 { font-size: 26px; color: #0f172a; font-weight: 800; margin-top: 2px; }
 
-        /* การ์ดบันทึกบัญชีแบบกรอกพิมพ์ธรรมดา */
-        .form-card {
-            background: white; padding: 16px; border-radius: 24px; border: 1.5px solid #e2e8f0;
-            display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-        }
+        /* ฟอร์มคีย์บัญชี */
+        .form-card { background: white; padding: 16px; border-radius: 24px; border: 1.5px solid #e2e8f0; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
+        
+        /* ปุ่มตัวเลือก บวก/ลบ ใหญ่ๆ กดง่าย */
+        .radio-tile-group { display: flex; gap: 10px; margin-top: 2px; }
+        .radio-tile { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border: 2.5px solid #e2e8f0; border-radius: 14px; cursor: pointer; font-size: 16px; font-weight: bold; color: #64748b; transition: all 0.2s; }
+        input[type="radio"]:checked + .radio-tile.type-plus { border-color: #2563eb; color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 1px #2563eb; }
+        input[type="radio"]:checked + .radio-tile.type-minus { border-color: #dc2626; color: #dc2626; background: #fef2f2; box-shadow: 0 0 0 1px #dc2626; }
 
-        /* แสดงผลสูตรคำนวณเรียลไทม์ย่อยๆ */
-        .calc-preview-box {
-            background: #0f172a; color: white; padding: 12px 14px; border-radius: 14px;
-            display: flex; flex-direction: column; gap: 2px; text-align: right; border: 1px solid #334155;
-        }
-        .calc-preview-title { font-size: 11px; color: #38bdf8; text-align: left; font-weight: bold; }
-        .calc-preview-formula { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #94a3b8; }
-        .calc-preview-total { font-family: 'Share Tech Mono', monospace; font-size: 22px; color: #4ade80; font-weight: bold; }
+        /* กล่องสูตรคำนวณตามความเป็นจริงสากล */
+        .calc-preview-box { background: #0f172a; color: white; padding: 14px; border-radius: 16px; display: flex; flex-direction: column; gap: 4px; border: 1.5px solid #1e293b; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        .calc-preview-title { font-size: 12px; color: #38bdf8; font-weight: bold; display: flex; justify-content: space-between; }
+        .calc-preview-formula { font-family: 'Share Tech Mono', monospace; font-size: 15px; color: #cbd5e1; margin-top: 2px; letter-spacing: 0.5px; }
+        .calc-preview-total { font-family: 'Share Tech Mono', monospace; font-size: 24px; color: #4ade80; font-weight: bold; border-top: 1px dashed #334155; padding-top: 4px; margin-top: 2px; text-align: right; }
 
-        .radio-tile-group { display: flex; gap: 10px; margin-top: 4px; }
-        .radio-tile {
-            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer;
-            font-size: 15px; font-weight: bold; color: #64748b; transition: all 0.2s;
-        }
-        input[type="radio"]:checked + .radio-tile.type-plus { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
-        input[type="radio"]:checked + .radio-tile.type-minus { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
-
-        /* รายการประวัติสรุปด้านล่าง */
-        .list-card { background: white; padding: 16px; border-radius: 20px; border: 1.5px solid #e2e8f0; }
+        /* ส่วนแสดงผลตารางประวัติ */
+        .list-card { background: white; padding: 16px; border-radius: 24px; border: 1.5px solid #e2e8f0; }
         .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .list-header h4 { font-size: 14px; font-weight: 700; }
-        .list-counter { background: #eff6ff; color: #1d4ed8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+        .list-header h4 { font-size: 15px; font-weight: 700; color: #1e293b; }
+        .list-counter { background: #eff6ff; color: #1d4ed8; padding: 3px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
 
         .tab-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; gap: 4px; margin-bottom: 12px; }
-        .tab-btn { flex: 1; background: none; border: none; padding: 8px; font-size: 12px; font-weight: 700; color: #64748b; border-radius: 8px; cursor: pointer; }
-        .tab-btn.active { background: white; color: #1d4ed8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .tab-btn { flex: 1; background: none; border: none; padding: 9px; font-size: 13px; font-weight: 700; color: #64748b; border-radius: 8px; cursor: pointer; }
+        .tab-btn.active { background: white; color: #1d4ed8; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
 
-        .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
-        .data-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;
-        }
-        .item-left { display: flex; align-items: center; gap: 10px; }
-        .item-room { width: 36px; height: 36px; background: #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #334155; }
-        .item-name { font-size: 13px; font-weight: 600; color: #1e293b; }
-        .item-right { text-align: right; display: flex; align-items: center; gap: 10px; }
-        .item-badge { font-size: 11px; padding: 2px 6px; border-radius: 6px; font-weight: bold; }
+        /* ตัวรายการสมุดบัญชีแยกตามจริง */
+        .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 380px; overflow-y: auto; }
+        .data-item { display: flex; flex-direction: column; padding: 12px; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0; gap: 6px; position: relative; }
+        
+        .item-row-top { display: flex; justify-content: space-between; align-items: center; }
+        .item-left { display: flex; align-items: center; gap: 10px; flex-grow: 1; cursor: pointer; }
+        .item-room { width: 40px; height: 40px; background: #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #1e293b; }
+        .item-name { font-size: 14px; font-weight: 600; color: #334155; }
+        
+        .item-right { display: flex; align-items: center; gap: 8px; text-align: right; }
+        .item-badge { font-size: 11px; padding: 2px 6px; border-radius: 6px; font-weight: bold; text-align: center; }
         .item-badge.plus { background: #eff6ff; color: #2563eb; }
         .item-badge.minus { background: #fef2f2; color: #dc2626; }
-        .item-amount { font-size: 14px; font-weight: 700; font-family: monospace; color: #1e293b; }
-        .btn-action { background: none; border: none; padding: 4px; font-size: 14px; }
-        .btn-action.delete { color: #ef4444; }
+        .item-amount { font-size: 15px; font-weight: 700; font-family: 'Share Tech Mono', monospace; color: #0f172a; }
+        
+        /* บรรทัดแสดงยอดคงเหลือสุทธิ ณ ตอนนั้นตามความจริง */
+        .item-row-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 4px; font-size: 11px; color: #64748b; }
+        .btn-action.delete { color: #ef4444; background: none; border: none; font-size: 14px; padding: 4px 8px; cursor: pointer; }
 
-        .empty-text { text-align: center; padding: 30px; font-size: 13px; color: #94a3b8; }
+        .empty-text { text-align: center; padding: 40px; font-size: 13px; color: #94a3b8; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -185,15 +107,15 @@
 
     <!-- แถบดาวน์โหลดแอปสำหรับมือถือ -->
     <div class="pwa-banner" id="pwaBanner">
-        <span>🏢 โหลดแอป หอ 8 ไผ่สีทอง ลงมือถือ</span>
-        <button class="pwa-btn" id="pwaBtn">โหลดแอป</button>
+        <span>🏢 ติดตั้งแอป หอ 8 ไผ่สีทอง ไว้บนจอมือถือ</span>
+        <button class="pwa-btn" id="pwaBtn">ติดตั้งแอป</button>
     </div>
 
-    <!-- 1. หน้าเข้าสู่ระบบ (Login) -->
+    <!-- 1. หน้าล็อกอิน -->
     <div id="login-section" class="auth-container">
         <img class="auth-profile-img" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" alt="หอ 8 ไผ่สีทอง">
         <h2>หอ 8 ไผ่สีทอง</h2>
-        <p class="subtitle">ระบบจัดการบัญชีผู้ดูแลระบบ</p>
+        <p class="subtitle">ระบบบัญชีความจริงสากลละเอียดสูง</p>
 
         <form onsubmit="handleLogin(event)">
             <div class="input-group">
@@ -204,19 +126,17 @@
                 <label>รหัสผ่าน (Password)</label>
                 <input type="password" id="password" value="1234" required placeholder="••••••••">
             </div>
-            <button type="submit" class="btn-primary">เข้าสู่ระบบได้ทันที</button>
+            <button type="submit" class="btn-primary">เข้าสู่ระบบจัดการบัญชี</button>
         </form>
         <div class="auth-switch">
-            สร้างแอดมินคนอื่นเพิ่ม? <button onclick="showSection('register-section')">ลงทะเบียนเพิ่มที่นี่</button>
+            ต้องการแอดมินร่วม? <button onclick="showSection('register-section')">ลงทะเบียนบัญชีใหม่</button>
         </div>
     </div>
 
-    <!-- 2. หน้าจอลงทะเบียนเพิ่ม -->
+    <!-- 2. หน้าลงทะเบียนเสริม -->
     <div id="register-section" class="auth-container hidden">
-        <div class="auth-logo">✍️</div>
-        <h2>ลงทะเบียนแอดมินร่วม</h2>
-        <p class="subtitle">สร้างบัญชีผู้ดูแลระบบเสริม</p>
-
+        <h2>ลงทะเบียนผู้ดูแลร่วม</h2>
+        <p class="subtitle">สร้างบัญชีผู้ใช้งานเสริมในระบบ</p>
         <form onsubmit="handleRegister(event)">
             <div class="input-group">
                 <label>ชื่อผู้ใช้งานใหม่</label>
@@ -226,96 +146,99 @@
                 <label>รหัสผ่านใหม่</label>
                 <input type="password" id="reg-password" required placeholder="กำหนดรหัสผ่าน">
             </div>
-            <button type="submit" class="btn-primary" style="background: #10b981;">ยืนยันเพิ่มผู้ดูแล</button>
+            <button type="submit" class="btn-primary" style="background: #10b981;">ยืนยันเปิดบัญชี</button>
         </form>
         <div class="auth-switch">
-            <button onclick="showSection('login-section')">◀ กลับหน้าล็อกอิน</button>
+            <button onclick="showSection('login-section')">◀ ย้อนกลับหน้าเดิม</button>
         </div>
     </div>
 
-    <!-- 3. หน้าจอหลักจัดการบัญชีแบบพิมพ์กรอกข้อมูล -->
+    <!-- 3. หน้าหลักจัดการบัญชี -->
     <div id="main-section" class="main-container">
         
         <div class="app-header">
             <div class="user-info">
-                <img id="user-avatar" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" class="user-avatar" alt="โปรไฟล์">
+                <img id="user-avatar" src="" class="user-avatar" alt="โปรไฟล์">
                 <div class="user-text">
                     <h3 id="display-user">admin</h3>
-                    <p>ผู้ดูแลระบบหลัก หอ 8 ไผ่สีทอง</p>
+                    <p>ผู้ดูแลระบบ หอ 8 ไผ่สีทอง</p>
                 </div>
             </div>
             <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-power-off"></i> ออกระบบ</button>
         </div>
 
-        <div id="balance-card" class="balance-card">
-            <p>ยอดเงินคงเหลือรวมทั้งหมดในระบบ</p>
+        <div class="balance-card">
+            <p>ยอดเงินคงเหลือรวมสุทธิ (ทุกห้องรวมกันในระบบ)</p>
             <h2 id="total-balance">0.00 บาท</h2>
         </div>
 
-        <!-- ================= ฟอร์มพิมพ์กรอกเงินบัญชีธรรมดา ================= -->
+        <!-- ฟอร์มกรอกพิมพ์ผ่านคีย์บอร์ดมือถือปกติ -->
         <div class="form-card">
             <input type="hidden" id="edit-id">
 
             <div style="display: flex; gap: 8px;">
                 <div style="width: 35%">
-                    <label style="font-size: 12px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">เลขห้อง</label>
-                    <input type="number" id="num-id" oninput="loadRoomData()" style="width:100%; padding: 11px; border:1.5px solid #cbd5e1; border-radius:12px; font-weight:700; text-align:center;" placeholder="เช่น 101">
+                    <label style="font-size: 12.5px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">เลขห้อง</label>
+                    <input type="number" id="num-id" oninput="loadRoomData()" style="width:100%; padding: 12px; border:1.5px solid #cbd5e1; border-radius:12px; font-weight:700; text-align:center; font-size:16px;" placeholder="เช่น 101">
                 </div>
                 <div style="width: 65%;">
-                    <label style="font-size: 12px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">ชื่อผู้เช่าหอพัก</label>
+                    <label style="font-size: 12.5px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">ชื่อผู้เช่าปัจจุบัน</label>
                     <div style="display: flex; gap: 4px;">
-                        <select id="title-name" style="padding: 11px; border:1.5px solid #cbd5e1; border-radius:12px; font-weight:600;">
+                        <select id="title-name" style="padding: 12px; border:1.5px solid #cbd5e1; border-radius:12px; font-weight:600; font-size:15px;">
                             <option value="นาย">นาย</option>
                             <option value="น.ส.">น.ส.</option>
                         </select>
-                        <input type="text" id="fullname" style="flex-grow:1; padding: 11px; border:1.5px solid #cbd5e1; border-radius:12px;" placeholder="ชื่อ - นามสกุล">
+                        <input type="text" id="fullname" style="flex-grow:1; padding: 12px; border:1.5px solid #cbd5e1; border-radius:12px; font-size:15px;" placeholder="ชื่อ - นามสกุล">
                     </div>
                 </div>
             </div>
 
             <div>
-                <label style="font-size: 12px; font-weight: bold; color: #475569; display:block; margin-bottom:2px;">เลือกประเภทการทำรายการ</label>
+                <label style="font-size: 12.5px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">เลือกคำสั่งคณิตศาสตร์ตามความจริง</label>
                 <div class="radio-tile-group">
                     <label style="flex: 1;">
                         <input type="radio" name="calc-operator" value="plus" id="radio-plus" checked onchange="updateLivePreview()" style="display: none;">
-                        <div class="radio-tile type-plus">➕ บันทึกเงินบวก</div>
+                        <div class="radio-tile type-plus">➕ บันทึกเงินเพิ่ม (บวก)</div>
                     </label>
                     <label style="flex: 1;">
                         <input type="radio" name="calc-operator" value="minus" id="radio-minus" onchange="updateLivePreview()" style="display: none;">
-                        <div class="radio-tile type-minus">➖ บันทึกเงินลบ</div>
+                        <div class="radio-tile type-minus">➖ บันทึกหักออก (ลบ)</div>
                     </label>
                 </div>
             </div>
 
             <div>
-                <label style="font-size: 12px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">จำนวนเงินทำรายการ (บาท)</label>
-                <input type="number" id="input-amount" step="any" oninput="updateLivePreview()" style="width:100%; padding: 12px; border:1.5px solid #cbd5e1; border-radius:12px; font-size:18px; font-weight:700; background:#f8fafc;" placeholder="0.00">
+                <label style="font-size: 12.5px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">จำนวนเงินที่ต้องการบวกลบ (บาท)</label>
+                <input type="number" id="input-amount" step="any" oninput="updateLivePreview()" style="width:100%; padding: 14px; border:1.5px solid #cbd5e1; border-radius:12px; font-size:20px; font-weight:700; background:#fdfdfd; color:#0f172a;" placeholder="0.00">
             </div>
 
-            <!-- กล่องสรุปผลเรียลไทม์ (คณิตศาสตร์ตามความจริง 100 - 50 = 50 ไม่ติดลบ) -->
+            <!-- กล่องแสดงผลคำนวณตามความเป็นจริงสากลแบบละเอียด -->
             <div class="calc-preview-box">
-                <div class="calc-preview-title" id="preview-room-title">กรุณาระบุเลขห้อง...</div>
-                <div class="calc-preview-formula" id="preview-formula">0.00</div>
-                <div class="calc-preview-total" id="preview-total-display">ยอดสุทธิ: 0.00 บาท</div>
+                <div class="calc-preview-title">
+                    <span id="preview-room-title">กรุณากรอกเลขห้อง...</span>
+                    <span style="color:#a855f7;">คณิตศาสตร์จริง</span>
+                </div>
+                <div class="calc-preview-formula" id="preview-formula">[ยอดเดิม 0]</div>
+                <div class="calc-preview-total" id="preview-total-display">ยอดคงเหลือปลายทาง: 0.00 บาท</div>
             </div>
 
             <div style="display: flex; gap: 8px; margin-top: 4px;">
-                <button onclick="clearForm()" style="width: 30%; background:#94a3b8; color:white; border:none; padding:12px; border-radius:12px; font-weight:600; cursor:pointer;">ล้างข้อมูล</button>
-                <button id="btn-save-data" onclick="saveAccountData()" class="btn-primary" style="width: 70%; background: #10b981; padding:12px;"><i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลบัญชี</button>
+                <button onclick="clearForm()" style="width: 32%; background:#94a3b8; color:white; border:none; padding:13px; border-radius:12px; font-weight:600; cursor:pointer; font-size:14px;">ล้างช่องกรอก</button>
+                <button id="btn-save-data" onclick="saveAccountData()" class="btn-primary" style="width: 68%; background: #10b981; padding:13px; font-size:15px;"><i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลบัญชี</button>
             </div>
         </div>
 
-        <!-- รายการประวัติ -->
+        <!-- รายการประวัติสมุดบัญชีธนาคาร (Statement) -->
         <div class="list-card">
             <div class="list-header">
-                <h4>ประวัติรายการคีย์ทั้งหมด</h4>
+                <h4>ประวัติการบันทึก (เรียงลำดับเวลาคีย์จริง)</h4>
                 <span id="list-count" class="list-counter">0 รายการ</span>
             </div>
 
             <div class="tab-group">
-                <button onclick="changeTab('all')" id="tab-all" class="tab-btn active">ทั้งหมด</button>
-                <button onclick="changeTab('income')" id="tab-income" class="tab-btn">เงินบวก</button>
-                <button onclick="changeTab('expense')" id="tab-expense" class="tab-btn">เงินลบ</button>
+                <button onclick="changeTab('all')" id="tab-all" class="tab-btn active">ดูทั้งหมด</button>
+                <button onclick="changeTab('income')" id="tab-income" class="tab-btn">เฉพาะเงินบวก</button>
+                <button onclick="changeTab('expense')" id="tab-expense" class="tab-btn">เฉพาะเงินลบ</button>
             </div>
 
             <div id="data-list-container" class="data-list"></div>
@@ -331,9 +254,9 @@
         }
 
         let currentSessionKey = "";
-        let dataList = [];
+        let dataList = []; 
         let currentTab = "all";
-        let currentRoomOldBalance = 0; // เงินสะสมที่คิดตามจริงเดิมของห้องนั้นๆ
+        let currentRoomOldBalance = 0; // ยอดสะสมเดิมของห้องที่เลือก ณ ปัจจุบัน
 
         function showSection(sectionId) {
             document.getElementById('login-section').classList.add('hidden');
@@ -348,7 +271,7 @@
             const user = document.getElementById('reg-username').value.trim();
             const pass = document.getElementById('reg-password').value;
             localStorage.setItem(`user_acc_${user}`, JSON.stringify({ user, pass, avatar: bossPhoto }));
-            alert("เพิ่มบัญชีผู้ดูแลระบบเสริมเรียบร้อยแล้ว!");
+            alert("ลงทะเบียนผู้ดูแลร่วมสำเร็จ!");
             showSection('login-section');
         }
 
@@ -361,7 +284,7 @@
             if (storedAccount) {
                 const account = JSON.parse(storedAccount);
                 if (account.pass === pass) {
-                    currentSessionKey = `pai_see_thong_calc_v2_${user}`;
+                    currentSessionKey = `pai_see_thong_real_v3_${user}`;
                     document.getElementById('display-user').innerText = user;
                     document.getElementById('user-avatar').src = account.avatar;
                     showSection('main-section');
@@ -369,7 +292,7 @@
                     return;
                 }
             }
-            alert("ขออภัยครับ ชื่อผู้ใช้หรือรหัสผ่านผิด!");
+            alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!");
         }
 
         function fetchData() {
@@ -379,22 +302,25 @@
             clearForm();
         }
 
-        // คำนวณยอดสะสมของห้องตามความจริง (บวกเพิ่ม หรือ ลบออก ตามสถานะที่บันทึกไว้)
-        function calculateRoomBalance(roomNum, excludeId = null) {
-            let balance = 0;
-            dataList.forEach(item => {
+        // ฟังก์ชันคำนวณหา "ยอดคงเหลือสะสมจริง" ล่าสุดของห้องนั้น ๆ แบบไทม์ไลน์สมุดบัญชีธนาคาร
+        function getRoomCurrentBalance(roomNum, excludeId = null) {
+            let currentBal = 0;
+            // วิ่งเช็กตามลำดับเวลาที่บันทึก (เรียงจากอดีตมาปัจจุบัน)
+            const sortedTimeline = [...dataList].sort((a, b) => a.timestamp - b.timestamp);
+            
+            for (let item of sortedTimeline) {
                 if (item.numId.toString() === roomNum.toString() && item.id !== parseInt(excludeId)) {
                     if (item.type === 'minus') {
-                        balance -= item.amount; // ถ้ารายการก่อนหน้าเป็นลบ ให้หักออก
+                        currentBal -= item.amount;
                     } else {
-                        balance += item.amount; // ถ้ารายการก่อนหน้าเป็นบวก ให้บวกเพิ่ม
+                        currentBal += item.amount;
                     }
                 }
-            });
-            return balance;
+            }
+            return currentBal;
         }
 
-        // โหลดข้อมูลห้องพักและแสดงผลรวมสะสมเก่า
+        // โหลดและคำนวณยอดเงินสะสมจริงของห้องเมื่อมีการพิมพ์เลขห้อง
         function loadRoomData() {
             const numId = document.getElementById('num-id').value.trim();
             const editId = document.getElementById('edit-id').value;
@@ -402,17 +328,16 @@
 
             if (!numId) {
                 currentRoomOldBalance = 0;
-                roomTitleEl.innerText = "กรุณาระบุเลขห้อง...";
+                roomTitleEl.innerText = "กรุณากรอกเลขห้อง...";
                 updateLivePreview();
                 return;
             }
 
-            // คำนวณเงินสะสมตามความจริงสากล
-            currentRoomOldBalance = calculateRoomBalance(numId, editId);
+            // คำนวณยอดสะสมสุทธิเดิมของห้องนี้ที่มีอยู่จริงก่อนทำการคีย์เพิ่ม/ลด
+            currentRoomOldBalance = getRoomCurrentBalance(numId, editId);
+            roomTitleEl.innerText = `🏢 ห้อง ${numId}`;
 
-            roomTitleEl.innerText = `🏢 ห้องที่ ${numId} (เงินสะสมเดิมในระบบ: ${currentRoomOldBalance.toLocaleString()} บ.)`;
-            
-            // ดึงชื่อเติมให้อัตโนมัติถ้าเคยมีประวัติ
+            // ช่วยเติมชื่ออัตโนมัติหากเคยมีประวัติ (สะดวกตอนพิมพ์เร็วๆ)
             const matchUser = dataList.find(item => item.numId.toString() === numId.toString());
             if (matchUser && !editId) {
                 document.getElementById('title-name').value = matchUser.titleName;
@@ -422,7 +347,7 @@
             updateLivePreview();
         }
 
-        // ================= กลไกแสดงผลสูตรคณิตศาสตร์เรียลไทม์ตามความจริง =================
+        // อัปเดตกล่องสรุปสูตรคำนวณจริงแบบเรียลไทม์เต็มรูปแบบ
         function updateLivePreview() {
             const inputAmount = parseFloat(document.getElementById('input-amount').value) || 0;
             const isMinus = document.getElementById('radio-minus').checked;
@@ -430,21 +355,20 @@
             const formulaEl = document.getElementById('preview-formula');
             const totalEl = document.getElementById('preview-total-display');
 
-            let finalNetResult = 0;
+            let runningResult = 0;
 
             if (isMinus) {
-                // ตัวอย่างความจริง: 100 - 50 = 50 สวยงามตรงตามความจริง ไม่ติดลบ
-                finalNetResult = currentRoomOldBalance - inputAmount;
-                formulaEl.innerText = `${currentRoomOldBalance.toLocaleString()} - ${inputAmount.toLocaleString()}`;
+                runningResult = currentRoomOldBalance - inputAmount;
+                formulaEl.innerHTML = `สูตรจริง: <span style="color:#fbbf24;">${currentRoomOldBalance.toLocaleString()}</span> หักลบออก (<span style="color:#f87171;">- ${inputAmount.toLocaleString()}</span>)`;
             } else {
-                finalNetResult = currentRoomOldBalance + inputAmount;
-                formulaEl.innerText = `${currentRoomOldBalance.toLocaleString()} + ${inputAmount.toLocaleString()}`;
+                runningResult = currentRoomOldBalance + inputAmount;
+                formulaEl.innerHTML = `สูตรจริง: <span style="color:#fbbf24;">${currentRoomOldBalance.toLocaleString()}</span> บวกเพิ่ม (<span style="color:#60a5fa;">+ ${inputAmount.toLocaleString()}</span>)`;
             }
 
-            totalEl.innerText = `ยอดสุทธิปลายทาง: ${finalNetResult.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท`;
+            totalEl.innerText = `ยอดคงเหลือปลายทาง: ${runningResult.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท`;
         }
 
-        // บันทึกธุรกรรมลงบัญชี
+        // บันทึกธุรกรรมลงฐานข้อมูล
         function saveAccountData() {
             const numId = document.getElementById('num-id').value.trim();
             const titleName = document.getElementById('title-name').value;
@@ -454,27 +378,41 @@
             const editId = document.getElementById('edit-id').value;
 
             if (!numId || !fullname) {
-                alert("❌ กรุณากรอก 'เลขห้อง' และ 'ชื่อผู้เช่า' ให้ครบถ้วนก่อนครับ!");
+                alert("❌ กรุณากรอกเลขห้องและชื่อผู้เช่าก่อนครับ");
                 return;
             }
             if (inputAmountVal <= 0) {
-                alert("❌ กรุณากรอกจำนวนเงินทำรายการให้มากกว่า 0 บาทครับ!");
+                alert("❌ กรุณาระบุจำนวนเงินคีย์ทำรายการที่มากกว่า 0 บาท");
                 return;
             }
 
-            // บันทึกแบบจำนวนเต็มบวกธรรมดาเสมอ ไม่จัดเก็บเป็นค่าติดลบให้สับสนในตาราง
-            let transactionType = isMinus ? 'minus' : 'plus';
+            const transactionType = isMinus ? 'minus' : 'plus';
 
             if (editId) {
-                dataList = dataList.map(item => item.id === parseInt(editId) ? { ...item, numId, titleName, fullname, amount: inputAmountVal, type: transactionType } : item);
+                // กรณีอัปเดตรายการเดิม
+                dataList = dataList.map(item => {
+                    if (item.id === parseInt(editId)) {
+                        return { ...item, numId, titleName, fullname, amount: inputAmountVal, type: transactionType };
+                    }
+                    return item;
+                });
             } else {
-                dataList.push({ id: Date.now(), numId, titleName, fullname, amount: inputAmountVal, type: transactionType });
+                // กรณีคีย์รายการใหม่เข้าไปในระบบตามจริง
+                dataList.push({
+                    id: Date.now(),
+                    timestamp: Date.now(), // ใช้เรียงลำดับสมุดบัญชีธนาคาร
+                    numId,
+                    titleName,
+                    fullname,
+                    amount: inputAmountVal, // บันทึกเป็นจำนวนจริงเต็มบวกปกติเสมอ
+                    type: transactionType
+                });
             }
 
             localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
             updateUI();
             clearForm();
-            alert("💾 บันทึกข้อมูลลงบัญชีหอพักเรียบร้อยแล้ว!");
+            alert("💾 บันทึกประวัติบัญชีจริงเรียบร้อยแล้วครับ!");
         }
 
         function clearForm() {
@@ -490,7 +428,6 @@
             loadRoomData();
         }
 
-        // ดึงรายการกลับมาแก้ไข
         function prepareEdit(id) {
             const item = dataList.find(i => i.id === id);
             if (item) {
@@ -507,16 +444,14 @@
                 }
 
                 loadRoomData();
-
-                document.getElementById('btn-save-data').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> อัปเดตรายการนี้';
+                document.getElementById('btn-save-data').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> อัปเดตแก้ไขรายการนี้';
                 document.getElementById('btn-save-data').style.background = "#f59e0b";
-                
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
         function deleteItem(id) {
-            if (confirm("ต้องการลบประวัติรายการนี้ใช่ไหม?")) {
+            if (confirm("ต้องการลบประวัติรายการนี้ใช่หรือไม่? (ยอดสะสมของห้องจะถูกคำนวณใหม่ตามจริงทันที)")) {
                 dataList = dataList.filter(item => item.id !== id);
                 localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
                 updateUI();
@@ -531,51 +466,75 @@
             updateUI();
         }
 
+        // ส่วนฟังก์ชันสร้างและอัปเดตหน้าตาตารางประวัติ (UI)
         function updateUI() {
             const container = document.getElementById('data-list-container');
             const totalBalanceEl = document.getElementById('total-balance');
-            const balanceCard = document.getElementById('balance-card');
-            
             container.innerHTML = '';
             
-            // คำนวณยอดเงินรวมรวมทุกห้องในระบบสุทธิตามความเป็นจริง
-            let systemTotalBalance = 0;
+            // 1. คำนวณยอดเงินรวมสุทธิทั้งหมดของระบบหอพักตามความเป็นจริงสากล
+            let netSystemBalance = 0;
             dataList.forEach(item => {
-                if (item.type === 'minus') systemTotalBalance -= item.amount;
-                else systemTotalBalance += item.amount;
+                if (item.type === 'minus') netSystemBalance -= item.amount;
+                else netSystemBalance += item.amount;
             });
-            
-            totalBalanceEl.innerText = `${systemTotalBalance.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
+            totalBalanceEl.innerText = `${netSystemBalance.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
 
-            if(systemTotalBalance >= 0) balanceCard.classList.remove('negative');
-            else balanceCard.classList.add('negative');
+            // เรียงลำดับประวัติตาม Timeline เวลาคีย์จริง (เพื่อสร้าง Statement สมุดบัญชีธนาคาร)
+            let sortedTimelineData = [...dataList].sort((a, b) => a.timestamp - b.timestamp);
 
-            let filtered = [...dataList];
-            if (currentTab === 'income') filtered = dataList.filter(item => item.type !== 'minus');
-            if (currentTab === 'expense') filtered = dataList.filter(item => item.type === 'minus');
+            // คำนวณหายอดคงเหลือวิ่งสะสม ณ จังหวะนั้น ๆ ของแต่ละห้องเก็บไว้แสดงผลความละเอียดสูง
+            let roomRunningBalances = {};
+            sortedTimelineData.forEach(item => {
+                const rNum = item.numId.toString();
+                if (!roomRunningBalances[rNum]) roomRunningBalances[rNum] = 0;
+                
+                if (item.type === 'minus') {
+                    roomRunningBalances[rNum] -= item.amount;
+                } else {
+                    roomRunningBalances[rNum] += item.amount;
+                }
+                // แนบค่าเงินสะสม ณ เสี้ยววินาทีนั้นพ่วงเข้าไปกับวัตถุไอเทม
+                item.runningSnapshotBalance = roomRunningBalances[rNum];
+            });
+
+            // ทำการกรองแถบ Tab
+            let filtered = [...sortedTimelineData];
+            if (currentTab === 'income') filtered = sortedTimelineData.filter(item => item.type !== 'minus');
+            if (currentTab === 'expense') filtered = sortedTimelineData.filter(item => item.type === 'minus');
 
             document.getElementById('list-count').innerText = `${filtered.length} รายการ`;
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-text">ยังไม่มีประวัติคีย์บัญชีในส่วนนี้</div>';
+                container.innerHTML = '<div class="empty-text">ยังไม่มีประวัติคีย์ข้อมูลในส่วนนี้</div>';
                 return;
             }
 
+            // แสดงผลโดยเรียงลำดับเลขห้องจากน้อยไปมาก เพื่อให้พี่ตรวจดูง่าย ค้นหาคล่องตัว
             filtered.sort((a, b) => parseInt(a.numId) - parseInt(b.numId));
 
             filtered.forEach(item => {
-                const isMinusType = item.type === 'minus';
+                const isMinus = item.type === 'minus';
                 const div = document.createElement('div');
                 div.className = 'data-item';
                 div.innerHTML = `
-                    <div class="item-left" onclick="prepareEdit(${item.id})">
-                        <div class="item-room">${item.numId}</div>
-                        <div class="item-name">${item.titleName}${item.fullname}</div>
+                    <div class="item-row-top">
+                        <div class="item-left" onclick="prepareEdit(${item.id})">
+                            <div class="item-room">${item.numId}</div>
+                            <div class="item-name">
+                                <div>${item.titleName}${item.fullname}</div>
+                            </div>
+                        </div>
+                        <div class="item-right">
+                            <span class="item-badge ${isMinus ? 'minus' : 'plus'}">${isMinus ? 'หักลบออก' : 'บวกเพิ่ม'}</span>
+                            <span class="item-amount" style="color: ${isMinus ? '#dc2626' : '#2563eb'};">
+                                ${item.amount.toLocaleString(undefined, {minimumFractionDigits:2})}
+                            </span>
+                        </div>
                     </div>
-                    <div class="item-right">
-                        <span class="item-badge ${isMinusType ? 'minus' : 'plus'}">${isMinusType ? 'เงินลบ' : 'เงินบวก'}</span>
-                        <span class="item-amount">${item.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-                        <button onclick="deleteItem(${item.id})" class="btn-action delete"><i class="fa-solid fa-trash-can"></i></button>
+                    <div class="item-row-bottom">
+                        <span>ยอดสะสมจริงหลังจบคีย์นี้: <strong style="color:#0f172a;">${item.runningSnapshotBalance.toLocaleString(undefined, {minimumFractionDigits:2})} บ.</strong></span>
+                        <button onclick="deleteItem(${item.id})" class="btn-action delete"><i class="fa-solid fa-trash-can"></i> ลบ</button>
                     </div>
                 `;
                 container.appendChild(div);
@@ -583,7 +542,8 @@
         }
 
         function handleLogout() {
-            currentSessionKey = ""; showSection('login-section');
+            currentSessionKey = ""; 
+            showSection('login-section');
             clearForm();
         }
     </script>
