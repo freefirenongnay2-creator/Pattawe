@@ -1,4 +1,3 @@
-// ฟังก์ชัน updateUI ที่ปรับปรุงให้กดที่แถวได้
 function updateUI() {
     const tbody = document.getElementById('data-table-body');
     const counter = document.getElementById('list-count');
@@ -21,7 +20,6 @@ function updateUI() {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-blue-50 transition-colors cursor-pointer border-b"; 
         
-        // เมื่อกดที่แถว จะเรียกฟังก์ชัน prompt เพื่อใส่เงิน
         tr.onclick = () => {
             const amount = prompt("ระบุจำนวนเงิน (ใส่เครื่องหมาย - ด้านหน้าถ้าต้องการลบเงิน):");
             if (amount !== null && amount !== "" && !isNaN(amount)) {
