@@ -1,94 +1,36 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <title>ระบบบัญชี หอ 8 ไผ่สีทอง (Smart Ledger)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Sarabun', sans-serif; background: #eef2f6; padding: 20px; }
-        .main-card { background: white; max-width: 1000px; margin: auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: #1e40af; color: white; padding: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .content { display: grid; grid-template-columns: 350px 1fr; gap: 20px; padding: 25px; }
-        .input-box { background: #f8fafc; padding: 20px; border-radius: 15px; border: 1px solid #e2e8f0; }
-        .list-box { border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
-        .room-row { padding: 12px; background: #fff; border: 1px solid #e2e8f0; margin-bottom: 8px; border-radius: 10px; cursor: pointer; display: flex; justify-content: space-between; transition: 0.2s; }
-        .room-row:hover { background: #dbeafe; border-color: #3b82f6; }
-        .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; width: 48%; }
-    </style>
-</head>
-<body>
+// ปรับปรุงฟังก์ชัน updateUI ใหม่
+function updateUI() {
+    const tbody = document.getElementById('data-table-body');
+    // ... (ส่วนคำนวณยอดเงินคงเหลือเหมือนเดิม) ...
 
-<div class="main-card">
-    <div class="header">
-        <div><h3>หอ 8 ไผ่สีทอง</h3><small>ระบบจัดการรายชื่อและบัญชี</small></div>
-        <div style="text-align: right;"><div>ยอดรวมสุทธิ</div><h2 id="total">0.00 บาท</h2></div>
-    </div>
-    <div class="content">
-        <!-- ฝั่งซ้าย: บันทึก -->
-        <div class="input-box">
-            <h4>บันทึกรายการ (คลิกชื่อห้องเพื่อโหลดข้อมูล)</h4>
-            <input type="text" id="num" placeholder="เลขห้อง">
-            <input type="text" id="name" placeholder="ชื่อผู้เช่า">
-            <input type="number" id="amount" placeholder="จำนวนเงิน">
-            <div style="display: flex; justify-content: space-between;">
-                <button class="btn" style="background:#2563eb" onclick="save('plus')">บวกเงิน (+)</button>
-                <button class="btn" style="background:#ef4444" onclick="save('minus')">ลบเงิน (-)</button>
-            </div>
-            <hr style="margin: 20px 0;">
-            <button class="btn" style="background:#64748b; width:100%" onclick="saveRoom()">เพิ่มห้องใหม่/อัปเดตชื่อ</button>
-        </div>
-
-        <!-- ฝั่งขวา: รายชื่อห้อง -->
-        <div class="list-box">
-            <h4>รายชื่อผู้เช่า (คลิกเพื่อทำรายการ)</h4>
-            <div id="room-list"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-    let rooms = JSON.parse(localStorage.getItem('rooms') || '[]');
-    let ledger = JSON.parse(localStorage.getItem('ledger') || '[]');
-
-    function saveRoom() {
-        const num = document.getElementById('num').value;
-        const name = document.getElementById('name').value;
-        if(!num || !name) return alert('กรอกเลขห้องและชื่อให้ครบ');
+    filteredList.forEach(item => {
+        const isIncome = item.amount >= 0;
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-blue-50 transition-colors cursor-pointer border-b";
+        // เมื่อคลิกที่แถว จะเรียกฟังก์ชันเปิดหน้าต่างทำรายการ (ต้องเขียนฟังก์ชันเพิ่มด้านล่าง)
+        tr.onclick = () => openTransactionModal(item.id); 
         
-        rooms.push({ num, name });
-        localStorage.setItem('rooms', JSON.stringify(rooms));
-        render();
-    }
+        tr.innerHTML = `
+            <td class="p-4 text-center font-bold text-slate-700">${item.numId}</td>
+            <td class="p-4 font-bold text-slate-800">${item.titleName}${item.fullname}</td>
+            <td class="p-4 text-right font-bold text-lg ${isIncome ? 'text-blue-600' : 'text-rose-500'}">
+                ${item.amount.toLocaleString()} บาท
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
 
-    function fillData(room) {
-        document.getElementById('num').value = room.num;
-        document.getElementById('name').value = room.name;
+// ฟังก์ชันใหม่: หน้าต่างเด้งขึ้นมาให้กดบวก/ลบ
+function openTransactionModal(id) {
+    const amount = prompt("ระบุจำนวนเงิน (ใส่เครื่องหมาย - ด้านหน้าถ้าต้องการลบเงิน):");
+    if (amount !== null && amount !== "") {
+        const value = parseFloat(amount);
+        const itemIndex = dataList.findIndex(i => i.id === id);
+        if (itemIndex !== -1) {
+            dataList[itemIndex].amount += value; // อัปเดตเงินในชื่อนั้นทันที
+            saveToStorage();
+            updateUI();
+        }
     }
-
-    function save(type) {
-        const num = document.getElementById('num').value;
-        const name = document.getElementById('name').value;
-        const amount = Math.abs(parseFloat(document.getElementById('amount').value) || 0);
-        
-        ledger.push({ num, name, amount, type });
-        localStorage.setItem('ledger', JSON.stringify(ledger));
-        render();
-    }
-
-    function render() {
-        // อัปเดตรายชื่อห้อง
-        let roomHtml = '';
-        rooms.forEach(r => roomHtml += `<div class="room-row" onclick="fillData({num:'${r.num}', name:'${r.name}'})">
-            <span>ห้อง ${r.num} : ${r.name}</span> <span>คลิกเพื่อทำรายการ</span></div>`);
-        document.getElementById('room-list').innerHTML = roomHtml;
-
-        // อัปเดตยอดรวม
-        let total = 0;
-        ledger.forEach(l => total += (l.type === 'plus' ? l.amount : -l.amount));
-        document.getElementById('total').innerText = total.toFixed(2) + ' บาท';
-    }
-    render();
-</script>
-</body>
-</html>
+}
