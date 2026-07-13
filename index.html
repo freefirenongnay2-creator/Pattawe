@@ -18,7 +18,7 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -55,7 +55,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .pwa-banner span { font-size: 13px; font-weight: 500; }
         .pwa-btn {
             background: white; color: #10b981; border: none;
@@ -63,7 +62,7 @@
             font-size: 12px; cursor: pointer;
         }
 
-        /* กล่องฟอร์ม ล็อกอิน */
+        /* หน้าเข้าสู่ระบบ */
         .auth-container {
             width: 100%;
             max-width: 400px;
@@ -74,7 +73,6 @@
             margin-top: 20px;
             text-align: center;
         }
-
         .auth-profile-img {
             width: 90px;
             height: 90px;
@@ -84,41 +82,37 @@
             margin-bottom: 12px;
             box-shadow: 0 4px 10px rgba(29, 78, 216, 0.15);
         }
-
         .auth-container h2 { font-size: 22px; color: #1e293b; font-weight: 700; margin-bottom: 4px; }
         .auth-container p.subtitle { font-size: 13px; color: #64748b; margin-bottom: 24px; }
 
-        .input-group { margin-bottom: 16px; text-align: left; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 6px; }
+        .input-group { margin-bottom: 12px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 4px; }
         .input-group input, .input-group select {
             width: 100%; padding: 12px 14px; border: 1.5px solid #e2e8f0;
             border-radius: 12px; font-size: 16px; outline: none; background: #f8fafc;
-            transition: all 0.2s;
         }
-        .input-group input:focus, .input-group select:focus { border-color: #1d4ed8; background: #fff; }
+        .input-group input:focus { border-color: #1d4ed8; background: #fff; }
 
         .btn-primary {
             width: 100%; padding: 14px; background: #1d4ed8; color: white;
-            border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
-            cursor: pointer; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
+            border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer;
         }
 
         .auth-switch { margin-top: 16px; font-size: 13px; color: #64748b; }
         .auth-switch button { background: none; border: none; color: #1d4ed8; font-weight: 700; cursor: pointer; }
 
-        /* ================= หน้าหลัก Dashboard สำหรับมือถือ ================= */
+        /* ================= หน้าหลัก Dashboard ================= */
         .main-container {
             width: 100%;
             max-width: 480px;
             display: none;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .app-header {
-            background: #1d4ed8; color: white; padding: 16px;
-            border-radius: 20px; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 4px 14px rgba(29, 78, 216, 0.2);
+            background: #1d4ed8; color: white; padding: 14px;
+            border-radius: 20px; display: flex; justify-content: space-between; align-items: center;
         }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .user-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid white; }
@@ -126,52 +120,70 @@
         .user-text p { font-size: 11px; color: #bfdbfe; }
         .btn-logout { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; }
 
-        /* การ์ดยอดเงินรวม */
         .balance-card {
-            background: #ffffff; padding: 16px; border-radius: 20px;
-            text-align: center; border: 1.5px solid #e2e8f0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            background: #ffffff; padding: 14px; border-radius: 20px; text-align: center; border: 1.5px solid #e2e8f0;
         }
         .balance-card p { font-size: 12px; color: #64748b; font-weight: 600; }
-        .balance-card h2 { font-size: 26px; color: #1e293b; font-weight: 700; margin: 4px 0; }
-        .balance-card.negative { background: #fef2f2; border-color: #fca5a5; }
+        .balance-card h2 { font-size: 24px; color: #1e293b; font-weight: 700; }
         .balance-card.negative h2 { color: #dc2626; }
 
-        /* ส่วนของฟอร์มบันทึกเงิน */
-        .form-card {
-            background: white; padding: 16px; border-radius: 20px;
-            border: 1.5px solid #e2e8f0;
+        /* ================= ดีไซน์เครื่องคิดเลขเรียลไทม์ ================= */
+        .calculator-card {
+            background: #1e293b; /* บอดี้เครื่องคิดเลขสีเข้มดุดัน */
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            color: white;
         }
-        .form-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: #1e293b; }
-        
-        .radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .radio-label {
-            display: flex; align-items: center; justify-content: center; padding: 12px;
-            background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px;
-            font-size: 13px; font-weight: 700; color: #64748b; cursor: pointer;
-        }
-        .radio-label input { display: none; }
-        .radio-label:has(input:checked).income { background: #eff6ff; border-color: #1d4ed8; color: #1d4ed8; }
-        .radio-label:has(input:checked).expense { background: #fef2f2; border-color: #ef4444; color: #ef4444; }
 
-        /* กล่องโชว์ บวกลบ ยอดเงินสะสมแบบเรียลไทม์ */
-        .calc-box {
-            background: #f8fafc;
-            border: 1.5px dashed #cbd5e1;
-            border-radius: 14px;
-            padding: 12px;
+        /* หน้าจอเครื่องคิดเลข */
+        .calc-screen {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 14px;
+            text-align: right;
             margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 13px;
+            border: 1px solid #334155;
         }
-        .calc-row { display: flex; justify-content: space-between; font-weight: 500; }
-        .calc-row.total-row { border-top: 1px solid #e2e8f0; padding-top: 6px; font-weight: 700; margin-top: 2px; }
-        .text-blue { color: #2563eb; }
-        .text-red { color: #dc2626; }
+        .calc-room-info { font-size: 13px; color: #38bdf8; font-weight: 600; text-align: left; margin-bottom: 4px; min-height: 20px; }
+        .calc-formula { font-family: 'Share Tech Mono', monospace; font-size: 16px; color: #94a3b8; letter-spacing: 1px; min-height: 24px; }
+        .calc-main-display { font-family: 'Share Tech Mono', monospace; font-size: 32px; font-weight: 700; color: #f8fafc; margin-top: 4px; overflow-x: auto; white-space: nowrap; }
+        .calc-main-display.equals-active { color: #4ade80; } /* เปลี่ยนเป็นสีเขียวเมื่อคำนวณลงตัว */
 
-        /* ส่วนของตารางรายการ */
+        /* ปุ่มแผงควบคุมเครื่องคิดเลข */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .calc-btn {
+            background: #334155;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 14px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.1s;
+        }
+        .calc-btn:active { background: #475569; }
+        
+        /* สีปุ่มเฉพาะทาง */
+        .btn-operator { background: #f97316; color: white; font-size: 22px; } /* สีส้มปุ่มเครื่องหมาย */
+        .btn-operator:active { background: #ea580c; }
+        .btn-operator.active-op { background: white; color: #f97316; box-shadow: 0 0 12px rgba(255,255,255,0.4); }
+
+        .btn-clear { background: #ef4444; color: white; } /* ปุ่มล้างสีแดง */
+        .btn-clear:active { background: #dc2626; }
+        
+        .btn-save { background: #10b981; color: white; grid-column: span 2; font-size: 16px; } /* ปุ่มบันทึกสีเขียว */
+        .btn-save:active { background: #059669; }
+
+        /* รายการประวัติสรุปด้านล่าง */
         .list-card { background: white; padding: 16px; border-radius: 20px; border: 1.5px solid #e2e8f0; }
         .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .list-header h4 { font-size: 14px; font-weight: 700; }
@@ -181,7 +193,7 @@
         .tab-btn { flex: 1; background: none; border: none; padding: 8px; font-size: 12px; font-weight: 700; color: #64748b; border-radius: 8px; cursor: pointer; }
         .tab-btn.active { background: white; color: #1d4ed8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+        .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
         .data-item {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9;
@@ -193,7 +205,7 @@
         .item-amount { font-size: 14px; font-weight: 700; font-family: monospace; }
         .item-amount.plus { color: #2563eb; }
         .item-amount.minus { color: #dc2626; }
-        .btn-action { background: none; border: none; color: #94a3b8; padding: 4px; font-size: 14px; }
+        .btn-action { background: none; border: none; padding: 4px; font-size: 14px; }
         .btn-action.delete { color: #ef4444; }
 
         .empty-text { text-align: center; padding: 30px; font-size: 13px; color: #94a3b8; }
@@ -208,7 +220,7 @@
         <button class="pwa-btn" id="pwaBtn">โหลดแอป</button>
     </div>
 
-    <!-- 1. หน้าจอเข้าสู่ระบบ (Login) -->
+    <!-- 1. หน้าเข้าสู่ระบบ (Login) -->
     <div id="login-section" class="auth-container">
         <img class="auth-profile-img" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" alt="หอ 8 ไผ่สีทอง">
         <h2>หอ 8 ไผ่สีทอง</h2>
@@ -252,7 +264,7 @@
         </div>
     </div>
 
-    <!-- 3. หน้าจอหลักจัดการเงินหลังล็อกอิน -->
+    <!-- 3. หน้าจอหลักเครื่องคิดเลขบัญชีหลังล็อกอิน -->
     <div id="main-section" class="main-container">
         
         <div class="app-header">
@@ -271,69 +283,62 @@
             <h2 id="total-balance">0.00 บาท</h2>
         </div>
 
-        <!-- ฟอร์มบันทึกเงิน -->
-        <div class="form-card">
-            <h4 id="form-title"><i class="fa-solid fa-file-pen"></i> บันทึกข้อมูลห้องพัก</h4>
-            <form id="finance-form" onsubmit="handleSaveData(event)">
-                <input type="hidden" id="edit-id">
-                
-                <div class="input-group">
-                    <label>เลขห้อง / หมายเลข</label>
-                    <input type="number" id="num-id" oninput="calculateRealtime()" required placeholder="ตัวอย่างเช่น 101, 802">
-                </div>
-
-                <div class="input-group">
-                    <label>ชื่อผู้เช่า / รายการ</label>
-                    <div style="display: flex; gap: 6px;">
-                        <select id="title-name" style="width: 85px; flex-shrink: 0;">
-                            <option value="นาย">นาย</option>
-                            <option value="น.ส.">น.ส.</option>
-                            <option value="นาง">นาง</option>
-                        </select>
-                        <input type="text" id="fullname" required placeholder="ชื่อ-นามสกุล">
-                    </div>
-                </div>
-
-                <!-- กล่องคำนวณบวกลบเงินให้ทันทีอัตโนมัติ -->
-                <div class="calc-box">
-                    <div class="calc-row">
-                        <span>💰 เงินเดิมสะสมของห้องนี้:</span>
-                        <span id="calc-old-balance" class="text-blue">0.00 บาท</span>
-                    </div>
-                    <div class="calc-row">
-                        <span>⚡ รายการใหม่ที่กำลังกรอก:</span>
-                        <span id="calc-new-action">0.00 บาท</span>
-                    </div>
-                    <div class="calc-row total-row">
-                        <span>📊 ยอดสุทธิที่จะเกิดขึ้นหลังบันทึก:</span>
-                        <div id="calc-result" style="color: #334155;">0.00 บาท</div>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>จำนวนเงิน (บาท)</label>
-                    <input type="number" step="any" id="amount" oninput="calculateRealtime()" required placeholder="0.00">
-                </div>
-
-                <div class="radio-group">
-                    <label class="radio-label income">
-                        <input type="radio" name="money-type" value="income" onchange="calculateRealtime()" checked> ➕ บวกเงินเข้า
-                    </label>
-                    <label class="radio-label expense">
-                        <input type="radio" name="money-type" value="expense" onchange="calculateRealtime()"> ➖ หักเงินออก
-                    </label>
-                </div>
-
-                <div style="display: flex; gap: 8px;">
-                    <button type="submit" id="btn-submit" class="btn-primary" style="padding: 12px;">บันทึกข้อมูลธุรกรรม</button>
-                    <button type="button" id="btn-cancel-edit" onclick="resetForm()" class="btn-logout hidden" style="background:#cbd5e1; color:#334155;">ยกเลิก</button>
-                </div>
-            </form>
+        <!-- รายละเอียดข้อมูลทั่วไปก่อนจิ้มคีย์พากลุ่ม -->
+        <div style="background: white; padding: 12px; border-radius: 16px; border: 1.5px solid #e2e8f0; display: flex; gap: 8px;">
+            <div style="width: 30%">
+                <input type="number" id="num-id" oninput="loadRoomData()" style="width:100%; padding: 10px; border:1.5px solid #cbd5e1; border-radius:10px; font-weight:700; text-align:center;" placeholder="เลขห้อง">
+            </div>
+            <div style="width: 70%; display: flex; gap: 4px;">
+                <select id="title-name" style="padding: 10px; border:1.5px solid #cbd5e1; border-radius:10px;">
+                    <option value="นาย">นาย</option>
+                    <option value="น.ส.">น.ส.</option>
+                </select>
+                <input type="text" id="fullname" style="flex-grow:1; padding: 10px; border:1.5px solid #cbd5e1; border-radius:10px;" placeholder="ชื่อผู้เช่า">
+            </div>
         </div>
 
+        <!-- ================= เครื่องคิดเลขเรียลไทม์ ================= -->
+        <div class="calculator-card">
+            <input type="hidden" id="edit-id">
+            
+            <div class="calc-screen">
+                <div class="calc-room-info" id="calc-room-text">กรุณาใส่เลขห้องด้านบน...</div>
+                <div class="calc-formula" id="calc-formula-display">0</div>
+                <div class="calc-main-display" id="calc-main-display">0.00</div>
+            </div>
+
+            <div class="calc-grid">
+                <!-- แผงแถวที่ 1 -->
+                <button type="button" class="calc-btn btn-clear" onclick="pressClear()">C</button>
+                <button type="button" class="calc-btn btn-operator" id="op-plus" onclick="setOperator('plus')">➕</button>
+                <button type="button" class="calc-btn btn-operator" id="op-minus" onclick="setOperator('minus')">➖</button>
+                <button type="button" class="calc-btn btn-operator" onclick="pressDelete()"><i class="fa-solid fa-backspace"></i></button>
+
+                <!-- แผงแถวที่ 2 -->
+                <button type="button" class="calc-btn" onclick="pressNum('7')">7</button>
+                <button type="button" class="calc-btn" onclick="pressNum('8')">8</button>
+                <button type="button" class="calc-btn" onclick="pressNum('9')">9</button>
+                <button type="button" class="calc-btn btn-operator" onclick="pressEquals()">=</button>
+
+                <!-- แผงแถวที่ 3 -->
+                <button type="button" class="calc-btn" onclick="pressNum('4')">4</button>
+                <button type="button" class="calc-btn" onclick="pressNum('5')">5</button>
+                <button type="button" class="calc-btn" onclick="pressNum('6')">6</button>
+                <button type="button" class="calc-btn btn-save" id="btn-save-calc" onclick="saveCalculatorData()">💾 บันทึกบัญชี</button>
+
+                <!-- แผงแถวที่ 4 -->
+                <button type="button" class="calc-btn" onclick="pressNum('1')">1</button>
+                <button type="button" class="calc-btn" onclick="pressNum('2')">2</button>
+                <button type="button" class="calc-btn" onclick="pressNum('3')">3</button>
+                <button type="button" class="calc-btn" style="grid-column: span 2;" onclick="pressNum('0')">0</button>
+                <button type="button" class="calc-btn" onclick="pressNum('.')">.</button>
+            </div>
+        </div>
+
+        <!-- รายการประวัติ -->
         <div class="list-card">
             <div class="list-header">
-                <h4 id="table-title">ประวัติรายการทั้งหมด</h4>
+                <h4>ประวัติรายการทั้งหมด</h4>
                 <span id="list-count" class="list-counter">0 รายการ</span>
             </div>
 
@@ -358,31 +363,19 @@
         let currentSessionKey = "";
         let dataList = [];
         let currentTab = "all";
-        let deferredPrompt;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); deferredPrompt = e;
-            document.getElementById('pwaBanner').style.display = 'flex';
-        });
-        document.getElementById('pwaBtn').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') document.getElementById('pwaBanner').style.display = 'none';
-                deferredPrompt = null;
-            }
-        });
+        
+        // ตัวแปรสถานะเครื่องคิดเลข
+        let currentRoomOldBalance = 0; // เงินสะสมเดิมของห้องนั้น
+        let inputAmountString = "";    // ตัวเลขที่เราพิมพ์บนเครื่องคิดเลข
+        let selectedOperator = "";     // เครื่องหมายที่เลือก ('plus' หรือ 'minus')
+        let calculatedResult = 0;      // ยอดสุทธิปลายทางที่จะบันทึก
 
         function showSection(sectionId) {
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('register-section').classList.add('hidden');
             document.getElementById('main-section').style.display = 'none';
-
-            if(sectionId === 'main-section') {
-                document.getElementById('main-section').style.display = 'flex';
-            } else {
-                document.getElementById(sectionId).classList.remove('hidden');
-            }
+            if(sectionId === 'main-section') document.getElementById('main-section').style.display = 'flex';
+            else document.getElementById(sectionId).classList.remove('hidden');
         }
 
         function handleRegister(e) {
@@ -403,7 +396,7 @@
             if (storedAccount) {
                 const account = JSON.parse(storedAccount);
                 if (account.pass === pass) {
-                    currentSessionKey = `pai_see_thong_v6_${user}`;
+                    currentSessionKey = `pai_see_thong_calc_v1_${user}`;
                     document.getElementById('display-user').innerText = user;
                     document.getElementById('user-avatar').src = account.avatar;
                     showSection('main-section');
@@ -418,84 +411,161 @@
             const data = localStorage.getItem(currentSessionKey);
             dataList = data ? JSON.parse(data) : [];
             updateUI();
+            resetCalculator();
         }
 
-        // 🌟 ฟังก์ชันคำนวณเงินอัตโนมัติแบบเรียลไทม์ (หักลบให้อัตโนมัติทันที)
-        function calculateRealtime() {
-            const inputNumId = document.getElementById('num-id').value.trim();
-            const inputAmountStr = document.getElementById('amount').value;
-            const moneyType = document.querySelector('input[name="money-type"]:checked').value;
+        // 🌟 ดึงข้อมูลยอดเดิมของห้องเมื่อพิมพ์เลขห้อง
+        function loadRoomData() {
+            const numId = document.getElementById('num-id').value.trim();
             const editId = document.getElementById('edit-id').value;
+            const roomTextEl = document.getElementById('calc-room-text');
 
-            const oldBalEl = document.getElementById('calc-old-balance');
-            const newActEl = document.getElementById('calc-new-action');
-            const resultEl = document.getElementById('calc-result');
-
-            if (!inputNumId) {
-                oldBalEl.innerText = "0.00 บาท";
-                newActEl.innerText = "0.00 บาท";
-                resultEl.innerText = "0.00 บาท";
-                resultEl.style.color = "#334155";
+            if (!numId) {
+                currentRoomOldBalance = 0;
+                roomTextEl.innerText = "กรุณาใส่เลขห้องด้านบน...";
+                updateCalcScreen();
                 return;
             }
 
-            // 1. หาเงินเดิมที่มีอยู่ในห้องนั้น (ถ้าอยู่ในโหมดแก้ไข ให้ข้ามรายการตัวเองไปก่อนเพื่อไม่ให้คำนวณซ้ำ)
-            let oldTotal = dataList
-                .filter(item => item.numId.toString() === inputNumId.toString() && item.id !== parseInt(editId))
+            // คำนวณเงินสะสมดั้งเดิมของห้องนี้
+            currentRoomOldBalance = dataList
+                .filter(item => item.numId.toString() === numId.toString() && item.id !== parseInt(editId))
                 .reduce((sum, item) => sum + item.amount, 0);
+
+            roomTextEl.innerText = `🏢 ห้องที่ ${numId} (เงินสะสมเดิม: ${currentRoomOldBalance.toLocaleString()} บ.)`;
             
-            oldBalEl.innerText = `${oldTotal.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
-
-            // 2. ดึงจำนวนเงินที่กำลังพิมพ์อยู่ปัจจุบัน
-            let currentAmount = parseFloat(inputAmountStr);
-            if (isNaN(currentAmount)) currentAmount = 0;
-
-            // 3. กำหนดว่าเป็น บวกเงิน หรือ หักเงินออก
-            if (moneyType === 'expense') {
-                currentAmount = -Math.abs(currentAmount);
-                newActEl.innerText = `-${Math.abs(currentAmount).toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
-                newActEl.className = "text-red";
-            } else {
-                currentAmount = Math.abs(currentAmount);
-                newActEl.innerText = `+${currentAmount.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
-                newActEl.className = "text-blue";
+            // หาชื่อเก่ามาเติมให้กรณีเคยบันทึกไว้แล้วเพื่อความไว
+            const matchUser = dataList.find(item => item.numId.toString() === numId.toString());
+            if (matchUser && !editId) {
+                document.getElementById('title-name').value = matchUser.titleName;
+                document.getElementById('fullname').value = matchUser.fullname;
             }
 
-            // 4. บวกลบคำนวณยอดสุทธิอัตโนมัติ
-            let finalResult = oldTotal + currentAmount;
-            resultEl.innerText = `${finalResult.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
-            
-            if (finalResult > 0) {
-                resultEl.style.color = "#2563eb"; // สีน้ำเงินเมื่อยอดเป็นบวก
-            } else if (finalResult < 0) {
-                resultEl.style.color = "#dc2626"; // สีแดงเมื่อยอดติดลบ
+            updateCalcScreen();
+        }
+
+        // ================= ฟังก์ชันกลไกเครื่องคิดเลข =================
+
+        function pressNum(num) {
+            if (num === '.' && inputAmountString.includes('.')) return; // ห้ามจุดซ้ำ
+            if (inputAmountString === "" && num === '.') inputAmountString = "0";
+            inputAmountString += num;
+            updateCalcScreen();
+        }
+
+        function pressDelete() {
+            inputAmountString = inputAmountString.slice(0, -1);
+            updateCalcScreen();
+        }
+
+        function pressClear() {
+            inputAmountString = "";
+            selectedOperator = "";
+            document.getElementById('edit-id').value = "";
+            document.getElementById('btn-save-calc').innerText = "💾 บันทึกบัญชี";
+            document.getElementById('btn-save-calc').style.background = "#10b981";
+            document.getElementById('num-id').value = "";
+            document.getElementById('fullname').value = "";
+            loadRoomData();
+        }
+
+        function setOperator(op) {
+            selectedOperator = op;
+            // ไฮไลต์ปุ่มเครื่องหมายที่กำลังกด
+            document.getElementById('op-plus').classList.remove('active-op');
+            document.getElementById('op-minus').classList.remove('active-op');
+            if (op === 'plus') document.getElementById('op-plus').classList.add('active-op');
+            if (op === 'minus') document.getElementById('op-minus').classList.add('active-op');
+            updateCalcScreen();
+        }
+
+        // ประมวลผลลัพธ์แบบเรียลไทม์ / หรือกดปุ่มเท่ากับ
+        function updateCalcScreen(isEqualsPressed = false) {
+            const formulaEl = document.getElementById('calc-formula-display');
+            const mainDisplayEl = document.getElementById('calc-main-display');
+
+            let currentInputVal = parseFloat(inputAmountString) || 0;
+            let opSign = "";
+
+            if (selectedOperator === "plus") {
+                opSign = " + ";
+                calculatedResult = currentRoomOldBalance + currentInputVal;
+            } else if (selectedOperator === "minus") {
+                opSign = " - ";
+                calculatedResult = currentRoomOldBalance - currentInputVal;
             } else {
-                resultEl.style.color = "#334155";
+                // ถ้ายังไม่ได้เลือกเครื่องหมาย ให้ผลลัพธ์เท่ากับเงินในกล่องจิ้มคีย์ธรรมดา
+                calculatedResult = currentInputVal || currentRoomOldBalance;
+            }
+
+            // แสดงสูตรสมการด้านบน
+            if (selectedOperator) {
+                formulaEl.innerText = `${currentRoomOldBalance.toLocaleString()} ${opSign} ${currentInputVal.toLocaleString()}`;
+            } else {
+                formulaEl.innerText = inputAmountString ? inputAmountString : `${currentRoomOldBalance.toLocaleString()}`;
+            }
+
+            // แสดงผลรวมตัวเลขเรียลไทม์ด้านล่างสุด
+            mainDisplayEl.innerText = calculatedResult.toLocaleString(undefined, { minimumFractionDigits: 2 }) + " บาท";
+
+            if (isEqualsPressed || selectedOperator !== "") {
+                mainDisplayEl.classList.add('equals-active');
+            } else {
+                mainDisplayEl.classList.remove('equals-active');
             }
         }
 
-        function handleSaveData(e) {
-            e.preventDefault();
-            const editId = document.getElementById('edit-id').value;
-            const numId = document.getElementById('num-id').value;
+        function pressEquals() {
+            updateCalcScreen(true);
+        }
+
+        function resetCalculator() {
+            inputAmountString = "";
+            selectedOperator = "";
+            document.getElementById('op-plus').classList.remove('active-op');
+            document.getElementById('op-minus').classList.remove('active-op');
+            loadRoomData();
+        }
+
+        // บันทึกธุรกรรมลงบัญชี
+        function saveCalculatorData() {
+            const numId = document.getElementById('num-id').value.trim();
             const titleName = document.getElementById('title-name').value;
             const fullname = document.getElementById('fullname').value.trim();
-            let amount = parseFloat(document.getElementById('amount').value);
-            const moneyType = document.querySelector('input[name="money-type"]:checked').value;
+            const editId = document.getElementById('edit-id').value;
 
-            amount = (moneyType === 'expense') ? -Math.abs(amount) : Math.abs(amount);
+            if (!numId || !fullname) {
+                alert("❌ กรุณากรอก 'เลขห้อง' และ 'ชื่อผู้เช่า' ให้ครบก่อนกดบันทึกครับ!");
+                return;
+            }
+            if (!selectedOperator && inputAmountString !== "") {
+                alert("❌ กรุณาเลือกเครื่องหมาย ➕ หรือ ➖ บนเครื่องคิดเลขก่อนครับ!");
+                return;
+            }
+
+            let inputVal = parseFloat(inputAmountString) || 0;
+            // ปรับค่าเงินจริงที่จะบันทึกลงไปในลิสต์
+            let finalSavedAmount = (selectedOperator === 'minus') ? -Math.abs(inputVal) : Math.abs(inputVal);
 
             if (editId) {
-                dataList = dataList.map(item => item.id === parseInt(editId) ? { ...item, numId, titleName, fullname, amount } : item);
+                // โหมดแก้ไขรายการเดิม
+                dataList = dataList.map(item => item.id === parseInt(editId) ? { ...item, numId, titleName, fullname, amount: finalSavedAmount } : item);
             } else {
-                dataList.push({ id: Date.now(), numId, titleName, fullname, amount });
+                // โหมดเพิ่มรายการปกติ
+                if (finalSavedAmount === 0 && inputAmountString === "") {
+                    alert("❌ กรุณาป้อนจำนวนเงินที่ต้องการบวกลบก่อนครับ!");
+                    return;
+                }
+                dataList.push({ id: Date.now(), numId, titleName, fullname, amount: finalSavedAmount });
             }
 
             localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
             updateUI();
-            resetForm();
+            pressClear();
+            alert("💾 บันทึกข้อมูลลงสมุดบัญชีเรียบร้อย!");
         }
 
+        // เตรียมข้อมูลดึงมาแก้ไขบนเครื่องคิดเลข
         function prepareEdit(id) {
             const item = dataList.find(i => i.id === id);
             if (item) {
@@ -503,14 +573,19 @@
                 document.getElementById('num-id').value = item.numId;
                 document.getElementById('title-name').value = item.titleName;
                 document.getElementById('fullname').value = item.fullname;
-                document.getElementById('amount').value = Math.abs(item.amount);
-                document.querySelector(`input[name="money-type"][value="${item.amount >= 0 ? 'income' : 'expense'}"]`).checked = true;
                 
-                document.getElementById('form-title').innerText = "✏️ กำลังแก้ไขข้อมูล";
-                document.getElementById('btn-submit').innerText = "อัปเดตข้อมูล";
-                document.getElementById('btn-submit').style.background = "#f59e0b";
-                document.getElementById('btn-cancel-edit').classList.remove('hidden');
-                calculateRealtime();
+                // โหลดเงินเดิมของห้องใหม่ (หักรายการตัวเองออก)
+                loadRoomData();
+
+                // ตั้งค่าเครื่องคิดเลขตามข้อมูลประวัติเดิม
+                inputAmountString = Math.abs(item.amount).toString();
+                setOperator(item.amount >= 0 ? 'plus' : 'minus');
+
+                document.getElementById('btn-save-calc').innerText = "✏️ อัปเดตรายการ";
+                document.getElementById('btn-save-calc').style.background = "#f59e0b";
+                
+                // เลื่อนหน้าจอกลับขึ้นไปด้านบนเพื่อให้กดเครื่องคิดเลขได้สะดวก
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
 
@@ -519,7 +594,7 @@
                 dataList = dataList.filter(item => item.id !== id);
                 localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
                 updateUI();
-                resetForm();
+                pressClear();
             }
         }
 
@@ -528,16 +603,6 @@
             ['all', 'income', 'expense'].forEach(t => document.getElementById(`tab-${t}`).classList.remove('active'));
             document.getElementById(`tab-${tab}`).classList.add('active');
             updateUI();
-        }
-
-        function resetForm() {
-            document.getElementById('finance-form').reset();
-            document.getElementById('edit-id').value = '';
-            document.getElementById('form-title').innerHTML = "<i class='fa-solid fa-file-pen'></i> บันทึกข้อมูลห้องพัก";
-            document.getElementById('btn-submit').innerText = "บันทึกข้อมูลธุรกรรม";
-            document.getElementById('btn-submit').style.background = "#1d4ed8";
-            document.getElementById('btn-cancel-edit').classList.add('hidden');
-            calculateRealtime();
         }
 
         function updateUI() {
@@ -549,11 +614,8 @@
             let totalBalance = dataList.reduce((sum, item) => sum + item.amount, 0);
             totalBalanceEl.innerText = `${totalBalance.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
 
-            if(totalBalance >= 0) {
-                balanceCard.classList.remove('negative');
-            } else {
-                balanceCard.classList.add('negative');
-            }
+            if(totalBalance >= 0) balanceCard.classList.remove('negative');
+            else balanceCard.classList.add('negative');
 
             let filtered = [...dataList];
             if (currentTab === 'income') filtered = dataList.filter(item => item.amount >= 0);
@@ -562,7 +624,7 @@
             document.getElementById('list-count').innerText = `${filtered.length} รายการ`;
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-text">ยังไม่มีประวัติบันทึกเงินในส่วนนี้</div>';
+                container.innerHTML = '<div class="empty-text">ยังไม่มีประวัติคีย์บัญชีในส่วนนี้</div>';
                 return;
             }
 
@@ -588,7 +650,7 @@
 
         function handleLogout() {
             currentSessionKey = ""; showSection('login-section');
-            resetForm();
+            pressClear();
         }
     </script>
 </body>
