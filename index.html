@@ -129,7 +129,7 @@
 
         /* ================= ดีไซน์เครื่องคิดเลขเรียลไทม์ ================= */
         .calculator-card {
-            background: #1e293b; /* บอดี้เครื่องคิดเลขสีเข้มดุดัน */
+            background: #1e293b; 
             border-radius: 24px;
             padding: 16px;
             box-shadow: 0 12px 30px rgba(0,0,0,0.15);
@@ -148,7 +148,7 @@
         .calc-room-info { font-size: 13px; color: #38bdf8; font-weight: 600; text-align: left; margin-bottom: 4px; min-height: 20px; }
         .calc-formula { font-family: 'Share Tech Mono', monospace; font-size: 16px; color: #94a3b8; letter-spacing: 1px; min-height: 24px; }
         .calc-main-display { font-family: 'Share Tech Mono', monospace; font-size: 32px; font-weight: 700; color: #f8fafc; margin-top: 4px; overflow-x: auto; white-space: nowrap; }
-        .calc-main-display.equals-active { color: #4ade80; } /* เปลี่ยนเป็นสีเขียวเมื่อคำนวณลงตัว */
+        .calc-main-display.equals-active { color: #4ade80; } 
 
         /* ปุ่มแผงควบคุมเครื่องคิดเลข */
         .calc-grid {
@@ -173,14 +173,14 @@
         .calc-btn:active { background: #475569; }
         
         /* สีปุ่มเฉพาะทาง */
-        .btn-operator { background: #f97316; color: white; font-size: 22px; } /* สีส้มปุ่มเครื่องหมาย */
+        .btn-operator { background: #f97316; color: white; font-size: 22px; } 
         .btn-operator:active { background: #ea580c; }
         .btn-operator.active-op { background: white; color: #f97316; box-shadow: 0 0 12px rgba(255,255,255,0.4); }
 
-        .btn-clear { background: #ef4444; color: white; } /* ปุ่มล้างสีแดง */
+        .btn-clear { background: #ef4444; color: white; } 
         .btn-clear:active { background: #dc2626; }
         
-        .btn-save { background: #10b981; color: white; grid-column: span 2; font-size: 16px; } /* ปุ่มบันทึกสีเขียว */
+        .btn-save { background: #10b981; color: white; grid-column: span 2; font-size: 16px; } 
         .btn-save:active { background: #059669; }
 
         /* รายการประวัติสรุปด้านล่าง */
@@ -366,9 +366,9 @@
         
         // ตัวแปรสถานะเครื่องคิดเลข
         let currentRoomOldBalance = 0; // เงินสะสมเดิมของห้องนั้น
-        let inputAmountString = "";    // ตัวเลขที่เราพิมพ์บนเครื่องคิดเลข
+        let inputAmountString = "";    // ตัวเลขที่เราพิมพ์บนแป้นเครื่องคิดเลข
         let selectedOperator = "";     // เครื่องหมายที่เลือก ('plus' หรือ 'minus')
-        let calculatedResult = 0;      // ยอดสุทธิปลายทางที่จะบันทึก
+        let calculatedResult = 0;      // ผลลัพธ์สุทธิที่จะคำนวณจริง
 
         function showSection(sectionId) {
             document.getElementById('login-section').classList.add('hidden');
@@ -414,7 +414,7 @@
             resetCalculator();
         }
 
-        // 🌟 ดึงข้อมูลยอดเดิมของห้องเมื่อพิมพ์เลขห้อง
+        // ดึงข้อมูลยอดเดิมของห้อง
         function loadRoomData() {
             const numId = document.getElementById('num-id').value.trim();
             const editId = document.getElementById('edit-id').value;
@@ -427,14 +427,13 @@
                 return;
             }
 
-            // คำนวณเงินสะสมดั้งเดิมของห้องนี้
+            // คำนวณเงินสะสมของห้องนี้
             currentRoomOldBalance = dataList
                 .filter(item => item.numId.toString() === numId.toString() && item.id !== parseInt(editId))
                 .reduce((sum, item) => sum + item.amount, 0);
 
             roomTextEl.innerText = `🏢 ห้องที่ ${numId} (เงินสะสมเดิม: ${currentRoomOldBalance.toLocaleString()} บ.)`;
             
-            // หาชื่อเก่ามาเติมให้กรณีเคยบันทึกไว้แล้วเพื่อความไว
             const matchUser = dataList.find(item => item.numId.toString() === numId.toString());
             if (matchUser && !editId) {
                 document.getElementById('title-name').value = matchUser.titleName;
@@ -444,10 +443,10 @@
             updateCalcScreen();
         }
 
-        // ================= ฟังก์ชันกลไกเครื่องคิดเลข =================
+        // ================= ฟังก์ชันกลไกเครื่องคิดเลขแบบคณิตศาสตร์สากล =================
 
         function pressNum(num) {
-            if (num === '.' && inputAmountString.includes('.')) return; // ห้ามจุดซ้ำ
+            if (num === '.' && inputAmountString.includes('.')) return; 
             if (inputAmountString === "" && num === '.') inputAmountString = "0";
             inputAmountString += num;
             updateCalcScreen();
@@ -471,7 +470,6 @@
 
         function setOperator(op) {
             selectedOperator = op;
-            // ไฮไลต์ปุ่มเครื่องหมายที่กำลังกด
             document.getElementById('op-plus').classList.remove('active-op');
             document.getElementById('op-minus').classList.remove('active-op');
             if (op === 'plus') document.getElementById('op-plus').classList.add('active-op');
@@ -479,7 +477,7 @@
             updateCalcScreen();
         }
 
-        // ประมวลผลลัพธ์แบบเรียลไทม์ / หรือกดปุ่มเท่ากับ
+        // ปรับอัลกอริทึมการคำนวณเรียลไทม์: เอาเงินเก่าเป็นตัวตั้งเสมอ (เช่น 100 - 50 = 50)
         function updateCalcScreen(isEqualsPressed = false) {
             const formulaEl = document.getElementById('calc-formula-display');
             const mainDisplayEl = document.getElementById('calc-main-display');
@@ -489,23 +487,22 @@
 
             if (selectedOperator === "plus") {
                 opSign = " + ";
-                calculatedResult = currentRoomOldBalance + currentInputVal;
+                calculatedResult = currentRoomOldBalance + currentInputVal; // เงินเดิม + เงินใหม่
             } else if (selectedOperator === "minus") {
                 opSign = " - ";
-                calculatedResult = currentRoomOldBalance - currentInputVal;
+                calculatedResult = currentRoomOldBalance - currentInputVal; // เงินเดิม - เงินใหม่ (100 - 50 = 50)
             } else {
-                // ถ้ายังไม่ได้เลือกเครื่องหมาย ให้ผลลัพธ์เท่ากับเงินในกล่องจิ้มคีย์ธรรมดา
-                calculatedResult = currentInputVal || currentRoomOldBalance;
+                calculatedResult = inputAmountString ? currentInputVal : currentRoomOldBalance;
             }
 
-            // แสดงสูตรสมการด้านบน
+            // อัปเดตบรรทัดสูตรด้านบนให้เห็นชัดเจน
             if (selectedOperator) {
                 formulaEl.innerText = `${currentRoomOldBalance.toLocaleString()} ${opSign} ${currentInputVal.toLocaleString()}`;
             } else {
                 formulaEl.innerText = inputAmountString ? inputAmountString : `${currentRoomOldBalance.toLocaleString()}`;
             }
 
-            // แสดงผลรวมตัวเลขเรียลไทม์ด้านล่างสุด
+            // แสดงยอดรวมปลายทาง
             mainDisplayEl.innerText = calculatedResult.toLocaleString(undefined, { minimumFractionDigits: 2 }) + " บาท";
 
             if (isEqualsPressed || selectedOperator !== "") {
@@ -544,14 +541,13 @@
             }
 
             let inputVal = parseFloat(inputAmountString) || 0;
-            // ปรับค่าเงินจริงที่จะบันทึกลงไปในลิสต์
+            
+            // เพื่อให้ระบบประวัติจัดเก็บตัวเลขถูกต้อง: เงินเข้าเป็นบวก เงินออกบันทึกเป็นค่าลบ
             let finalSavedAmount = (selectedOperator === 'minus') ? -Math.abs(inputVal) : Math.abs(inputVal);
 
             if (editId) {
-                // โหมดแก้ไขรายการเดิม
                 dataList = dataList.map(item => item.id === parseInt(editId) ? { ...item, numId, titleName, fullname, amount: finalSavedAmount } : item);
             } else {
-                // โหมดเพิ่มรายการปกติ
                 if (finalSavedAmount === 0 && inputAmountString === "") {
                     alert("❌ กรุณาป้อนจำนวนเงินที่ต้องการบวกลบก่อนครับ!");
                     return;
@@ -565,7 +561,7 @@
             alert("💾 บันทึกข้อมูลลงสมุดบัญชีเรียบร้อย!");
         }
 
-        // เตรียมข้อมูลดึงมาแก้ไขบนเครื่องคิดเลข
+        // ดึงมาแก้ไข
         function prepareEdit(id) {
             const item = dataList.find(i => i.id === id);
             if (item) {
@@ -574,17 +570,14 @@
                 document.getElementById('title-name').value = item.titleName;
                 document.getElementById('fullname').value = item.fullname;
                 
-                // โหลดเงินเดิมของห้องใหม่ (หักรายการตัวเองออก)
                 loadRoomData();
 
-                // ตั้งค่าเครื่องคิดเลขตามข้อมูลประวัติเดิม
                 inputAmountString = Math.abs(item.amount).toString();
                 setOperator(item.amount >= 0 ? 'plus' : 'minus');
 
                 document.getElementById('btn-save-calc').innerText = "✏️ อัปเดตรายการ";
                 document.getElementById('btn-save-calc').style.background = "#f59e0b";
                 
-                // เลื่อนหน้าจอกลับขึ้นไปด้านบนเพื่อให้กดเครื่องคิดเลขได้สะดวก
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
