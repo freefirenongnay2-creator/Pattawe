@@ -9,11 +9,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="หอ 8 ไผ่สีทอง">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/616/616421.png">
+    <link rel="apple-touch-icon" href="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5">
     <meta name="theme-color" content="#1d4ed8">
 
     <!-- Web Manifest Inline -->
-    <link rel="manifest" href='data:application/json,{"name":"ระบบบัญชีหอพัก หอ 8 ไผ่สีทอง","short_name":"หอ 8 ไผ่สีทอง","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#1d4ed8","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/616/616421.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest" href='data:application/json,{"name":"ระบบบัญชีหอพัก หอ 8 ไผ่สีทอง","short_name":"หอ 8 ไผ่สีทอง","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#1d4ed8","icons":[{"src":"https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5","sizes":"512x512","type":"image/png"}]}'>
 
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,11 +71,20 @@
             padding: 28px 20px;
             border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            margin-top: 40px;
+            margin-top: 20px;
             text-align: center;
         }
 
-        .auth-logo { font-size: 44px; margin-bottom: 10px; }
+        .auth-profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #1d4ed8;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(29, 78, 216, 0.15);
+        }
+
         .auth-container h2 { font-size: 22px; color: #1e293b; font-weight: 700; margin-bottom: 4px; }
         .auth-container p.subtitle { font-size: 13px; color: #64748b; margin-bottom: 24px; }
 
@@ -114,7 +123,7 @@
             align-items: center; box-shadow: 0 4px 14px rgba(29, 78, 216, 0.2);
         }
         .user-info { display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 42px; height: 42px; rounded-radius: 50%; border-radius: 50%; object-cover: cover; border: 2px solid white; }
+        .user-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid white; }
         .user-text h3 { font-size: 15px; font-weight: 700; }
         .user-text p { font-size: 11px; color: #bfdbfe; }
         .btn-logout { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; }
@@ -162,7 +171,6 @@
         .tab-btn { flex: 1; background: none; border: none; padding: 8px; font-size: 12px; font-weight: 700; color: #64748b; border-radius: 8px; cursor: pointer; }
         .tab-btn.active { background: white; color: #1d4ed8; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        /* รายการแบบการ์ดย่อยสำหรับมือถือ (ดูง่ายกว่าตารางคอมพิวเตอร์) */
         .data-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
         .data-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -178,7 +186,7 @@
         .btn-action { background: none; border: none; color: #94a3b8; padding: 4px; font-size: 14px; }
         .btn-action.delete { color: #ef4444; }
 
-        .empty-text { text-center: center; text-align: center; padding: 30px; font-size: 13px; color: #94a3b8; }
+        .empty-text { text-align: center; padding: 30px; font-size: 13px; color: #94a3b8; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -192,82 +200,83 @@
 
     <!-- 1. หน้าจอเข้าสู่ระบบ (Login) -->
     <div id="login-section" class="auth-container">
-        <div class="auth-logo">🏢</div>
+        <!-- แสดงรูปโปรไฟล์เจ้าของหอพักทันทีในหน้าล็อกอิน -->
+        <img class="auth-profile-img" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" alt="หอ 8 ไผ่สีทอง">
         <h2>หอ 8 ไผ่สีทอง</h2>
-        <p class="subtitle">ระบบจัดการบัญชีและรายชื่อผู้พักอาศัย</p>
+        <p class="subtitle">ระบบจัดการบัญชีผู้ดูแลระบบ</p>
 
         <form onsubmit="handleLogin(event)">
             <div class="input-group">
-                <label>ชื่อผู้ใช้งาน</label>
-                <input type="text" id="username" required placeholder="ระบุชื่อบัญชี">
-            </div>
-            <div class="input-group">
-                <label>รหัสผ่าน</label>
-                <input type="password" id="password" required placeholder="••••••••">
-            </div>
-            <button type="submit" class="btn-primary">เข้าสู่ระบบ</button>
-        </form>
-        <div class="auth-switch">
-            ยังไม่มีบัญชีผู้ดูแล? <button onclick="showSection('register-section')">ลงทะเบียนที่นี่</button>
-        </div>
-    </div>
-
-    <!-- 2. หน้าจอลงทะเบียน (Register) -->
-    <div id="register-section" class="auth-container hidden">
-        <div class="auth-logo">✍️</div>
-        <h2>ลงทะเบียนผู้ดูแล</h2>
-        <p class="subtitle">สร้างบัญชีผู้ดูแลระบบใหม่</p>
-
-        <form onsubmit="handleRegister(event)">
-            <div class="input-group">
                 <label>ชื่อผู้ใช้งาน (Username)</label>
-                <input type="text" id="reg-username" required placeholder="ภาษาอังกฤษหรือตัวเลข">
+                <input type="text" id="username" value="admin" required placeholder="ระบุชื่อบัญชี">
             </div>
             <div class="input-group">
                 <label>รหัสผ่าน (Password)</label>
-                <input type="password" id="reg-password" required placeholder="กำหนดรหัสผ่าน">
+                <input type="password" id="password" value="1234" required placeholder="••••••••">
             </div>
-            <button type="submit" class="btn-primary" style="background: #10b981;">ยืนยันการลงทะเบียน</button>
+            <button type="submit" class="btn-primary">เข้าสู่ระบบได้ทันที</button>
         </form>
         <div class="auth-switch">
-            มีบัญชีอยู่แล้ว? <button onclick="showSection('login-section')">กลับไปล็อกอิน</button>
+            สร้างแอดมินคนอื่นเพิ่ม? <button onclick="showSection('register-section')">ลงทะเบียนเพิ่มที่นี่</button>
         </div>
     </div>
 
-    <!-- 3. หน้าจอหลักจัดการเงิน (Main Dashboard) -->
+    <!-- 2. หน้าจอลงทะเบียนเพิ่ม (Register) -->
+    <div id="register-section" class="auth-container hidden">
+        <div class="auth-logo">✍️</div>
+        <h2>ลงทะเบียนแอดมินร่วม</h2>
+        <p class="subtitle">สร้างบัญชีผู้ดูแลระบบเสริม</p>
+
+        <form onsubmit="handleRegister(event)">
+            <div class="input-group">
+                <label>ชื่อผู้ใช้งานใหม่</label>
+                <input type="text" id="reg-username" required placeholder="เช่น staff01">
+            </div>
+            <div class="input-group">
+                <label>รหัสผ่านใหม่</label>
+                <input type="password" id="reg-password" required placeholder="กำหนดรหัสผ่าน">
+            </div>
+            <button type="submit" class="btn-primary" style="background: #10b981;">ยืนยันเพิ่มผู้ดูแล</button>
+        </form>
+        <div class="auth-switch">
+            <button onclick="showSection('login-section')">◀ กลับหน้าล็อกอิน</button>
+        </div>
+    </div>
+
+    <!-- 3. หน้าจอหลักจัดการเงินหลังล็อกอิน (Main Dashboard) -->
     <div id="main-section" class="main-container">
         
-        <!-- ส่วนหัวแอป -->
+        <!-- ส่วนหัวแอปแสดงรูปโปรไฟล์ -->
         <div class="app-header">
             <div class="user-info">
-                <img id="user-avatar" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="user-avatar" alt="โปรไฟล์">
+                <img id="user-avatar" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" class="user-avatar" alt="โปรไฟล์">
                 <div class="user-text">
-                    <h3 id="display-user">Admin</h3>
-                    <p>ผู้ดูแลระบบหอพัก หอ 8</p>
+                    <h3 id="display-user">admin</h3>
+                    <p>ผู้ดูแลระบบหลัก หอ 8 ไผ่สีทอง</p>
                 </div>
             </div>
-            <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-power-off"></i> ออก</button>
+            <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-power-off"></i> ออกระบบ</button>
         </div>
 
-        <!-- การ์ดยอดเงินคงเหลือรวม -->
+        <!-- การ์ดยอดเงินรวม -->
         <div id="balance-card" class="balance-card">
-            <p>ยอดเงินคงเหลือรวมทั้งหมด</p>
+            <p>ยอดเงินคงเหลือรวมทั้งหมดในระบบ</p>
             <h2 id="total-balance">0.00 บาท</h2>
         </div>
 
-        <!-- ฟอร์มบันทึกธุรกรรม -->
+        <!-- ฟอร์มบันทึกเงิน -->
         <div class="form-card">
-            <h4 id="form-title"><i class="fa-solid fa-file-pen"></i> บันทึกข้อมูลธุรกรรม</h4>
+            <h4 id="form-title"><i class="fa-solid fa-file-pen"></i> บันทึกข้อมูลห้องพัก</h4>
             <form id="finance-form" onsubmit="handleSaveData(event)">
                 <input type="hidden" id="edit-id">
                 
                 <div class="input-group">
-                    <label>เลขที่ / เลขห้อง</label>
-                    <input type="number" id="num-id" oninput="checkCurrentBalance()" required placeholder="เช่น 101, 805">
+                    <label>เลขห้อง / หมายเลข</label>
+                    <input type="number" id="num-id" oninput="checkCurrentBalance()" required placeholder="ตัวอย่างเช่น 101, 802">
                 </div>
 
                 <div class="input-group">
-                    <label>ชื่อผู้พักอาศัย</label>
+                    <label>ชื่อผู้เช่า / รายการ</label>
                     <div style="display: flex; gap: 6px;">
                         <select id="title-name" style="width: 85px; flex-shrink: 0;">
                             <option value="นาย">นาย</option>
@@ -279,7 +288,7 @@
                 </div>
 
                 <div class="person-balance-box">
-                    <span>สะสมเฉพาะห้องนี้:</span>
+                    <span>ยอดสะสมของห้องนี้:</span>
                     <span id="current-person-balance">0.00 บาท</span>
                 </div>
 
@@ -290,24 +299,24 @@
 
                 <div class="radio-group">
                     <label class="radio-label income">
-                        <input type="radio" name="money-type" value="income" checked> ➕ บวกเงิน
+                        <input type="radio" name="money-type" value="income" checked> ➕ บวกเงินเข้า
                     </label>
                     <label class="radio-label expense">
-                        <input type="radio" name="money-type" value="expense"> ➖ ลบเงิน
+                        <input type="radio" name="money-type" value="expense"> ➖ หักเงินออก
                     </label>
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <button type="submit" id="btn-submit" class="btn-primary" style="padding: 12px;">บันทึกข้อมูล</button>
+                    <button type="submit" id="btn-submit" class="btn-primary" style="padding: 12px;">บันทึกข้อมูลธุรกรรม</button>
                     <button type="button" id="btn-cancel-edit" onclick="resetForm()" class="btn-logout hidden" style="background:#cbd5e1; color:#334155;">ยกเลิก</button>
                 </div>
             </form>
         </div>
 
-        <!-- ส่วนตารางแสดงผลรายการ -->
+        <!-- รายการสรุปด้านล่าง -->
         <div class="list-card">
             <div class="list-header">
-                <h4 id="table-title">รายการข้อมูลทั้งหมด</h4>
+                <h4 id="table-title">ประวัติรายการทั้งหมด</h4>
                 <span id="list-count" class="list-counter">0 รายการ</span>
             </div>
 
@@ -317,23 +326,26 @@
                 <button onclick="changeTab('expense')" id="tab-expense" class="tab-btn">เงินลบ</button>
             </div>
 
-            <!-- กล่องแสดงรายการสิ่งของย่อยแบบเวอร์ชันมือถือ -->
             <div id="data-list-container" class="data-list">
-                <!-- ข้อมูลผ่าน JavaScript -->
+                <!-- ข้อมูลจะแสดงที่นี่ -->
             </div>
         </div>
 
     </div>
 
     <script>
-        const defaultBossAvatar = "https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5";
+        const bossPhoto = "https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5";
         
+        // สร้างบัญชี admin ตั้งต้นไว้ในเครื่องทันที
+        if(!localStorage.getItem("user_acc_admin")) {
+            localStorage.setItem("user_acc_admin", JSON.stringify({ user: "admin", pass: "1234", avatar: bossPhoto }));
+        }
+
         let currentSessionKey = "";
         let dataList = [];
         let currentTab = "all";
         let deferredPrompt;
 
-        // ระบบติดตั้ง PWA 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); deferredPrompt = e;
             document.getElementById('pwaBanner').style.display = 'flex';
@@ -350,7 +362,6 @@
         function showSection(sectionId) {
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('register-section').classList.add('hidden');
-            document.getElementById('main-section').classList.remove('main-container');
             document.getElementById('main-section').style.display = 'none';
 
             if(sectionId === 'main-section') {
@@ -364,9 +375,8 @@
             e.preventDefault();
             const user = document.getElementById('reg-username').value.trim();
             const pass = document.getElementById('reg-password').value;
-            const accountData = { user, pass, avatar: defaultBossAvatar };
-            localStorage.setItem(`user_acc_${user}`, JSON.stringify(accountData));
-            alert("ลงทะเบียนผู้ดูแลระบบสำเร็จแล้ว!");
+            localStorage.setItem(`user_acc_${user}`, JSON.stringify({ user, pass, avatar: bossPhoto }));
+            alert("เพิ่มบัญชีผู้ดูแลระบบเสริมเรียบร้อยแล้ว!");
             showSection('login-section');
         }
 
@@ -379,7 +389,7 @@
             if (storedAccount) {
                 const account = JSON.parse(storedAccount);
                 if (account.pass === pass) {
-                    currentSessionKey = `pai_see_thong_v4_${user}`;
+                    currentSessionKey = `pai_see_thong_v5_${user}`;
                     document.getElementById('display-user').innerText = user;
                     document.getElementById('user-avatar').src = account.avatar;
                     showSection('main-section');
@@ -387,7 +397,7 @@
                     return;
                 }
             }
-            alert("ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง!");
+            alert("ขออภัยครับ ชื่อผู้ใช้หรือรหัสผ่านผิด!");
         }
 
         function fetchData() {
@@ -467,8 +477,8 @@
         function resetForm() {
             document.getElementById('finance-form').reset();
             document.getElementById('edit-id').value = '';
-            document.getElementById('form-title').innerHTML = "<i class='fa-solid fa-file-pen'></i> บันทึกข้อมูลธุรกรรม";
-            document.getElementById('btn-submit').innerText = "บันทึกข้อมูล";
+            document.getElementById('form-title').innerHTML = "<i class='fa-solid fa-file-pen'></i> บันทึกข้อมูลห้องพัก";
+            document.getElementById('btn-submit').innerText = "บันทึกข้อมูลธุรกรรม";
             document.getElementById('btn-submit').style.background = "#1d4ed8";
             document.getElementById('btn-cancel-edit').classList.add('hidden');
             checkCurrentBalance();
@@ -496,7 +506,7 @@
             document.getElementById('list-count').innerText = `${filtered.length} รายการ`;
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-text">ไม่มีข้อมูลรายชื่อในหมวดหมู่นี้</div>';
+                container.innerHTML = '<div class="empty-text">ยังไม่มีประวัติบันทึกเงินในส่วนนี้</div>';
                 return;
             }
 
@@ -522,8 +532,6 @@
 
         function handleLogout() {
             currentSessionKey = ""; showSection('login-section');
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
             resetForm();
         }
     </script>
