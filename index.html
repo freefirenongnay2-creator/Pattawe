@@ -2,28 +2,39 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>ระบบจัดการการเงิน หอ 8 ไผ่สีทอง</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบัญชีหอพัก - หอ 8 ไผ่สีทอง</title>
     <style>
-        body { font-family: 'Sarabun', sans-serif; background: #f1f5f9; display: flex; justify-content: center; padding: 20px; }
-        .container { background: white; padding: 20px; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        input, select, button { width: 100%; margin: 8px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { background: #1e40af; color: white; border: none; cursor: pointer; font-weight: bold; }
-        #list { margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        body { font-family: 'Sarabun', sans-serif; background: #f1f5f9; display: flex; justify-content: center; padding: 20px; color: #1e293b; }
+        .container { background: white; padding: 25px; border-radius: 28px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; }
+        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 4px solid #1e40af; margin-bottom: 15px; }
+        h2 { font-size: 24px; margin-bottom: 5px; }
+        .total-box { background: #0f172a; color: #4ade80; padding: 15px; border-radius: 20px; font-size: 26px; font-weight: 800; margin-bottom: 20px; font-family: monospace; }
+        input, select, button { width: 100%; margin: 8px 0; padding: 14px; border: 2px solid #e2e8f0; border-radius: 16px; box-sizing: border-box; font-size: 15px; }
+        button { background: #1e40af; color: white; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #1d4ed8; }
+        .list-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        .plus { color: #2563eb; font-weight: bold; }
+        .minus { color: #dc2626; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h3>บัญชีหอพัก</h3>
-    <h2 id="total">0.00 บาท</h2>
+    <img src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" class="profile-img">
+    <h3>หอ 8 ไผ่สีทอง</h3>
+    <div class="total-box" id="total">0.00 THB</div>
+    
     <input type="number" id="num" placeholder="เลขห้อง">
-    <input type="text" id="name" placeholder="ชื่อ">
-    <input type="number" id="amount" placeholder="จำนวนเงิน">
+    <input type="text" id="name" placeholder="ชื่อผู้เช่า">
+    <input type="number" id="amount" placeholder="จำนวนเงิน (กรอกตัวเลข)">
+    
     <select id="type">
-        <option value="plus">บวกเงิน</option>
-        <option value="minus">ลบเงิน</option>
+        <option value="plus">บันทึกเงินบวก</option>
+        <option value="minus">บันทึกเงินลบ</option>
     </select>
-    <button onclick="save()">บันทึก</button>
+    
+    <button onclick="save()">บันทึกรายการ</button>
     <div id="list"></div>
 </div>
 
@@ -33,30 +44,35 @@
     function save() {
         const num = document.getElementById('num').value;
         const name = document.getElementById('name').value;
-        // ใช้ Math.abs เพื่อดึงแค่ตัวเลขมาคำนวณ ป้องกันปัญหาเครื่องหมายติดลบ
+        // บังคับให้เป็นค่าบวกเสมอไม่ว่าจะพิมพ์อะไรมา เพื่อป้องกันตรรกะผิดพลาด
         const amount = Math.abs(parseFloat(document.getElementById('amount').value) || 0);
         const type = document.getElementById('type').value;
 
-        if(!num || !name || amount === 0) return alert('กรอกข้อมูลให้ครบ');
+        if(!num || !name || amount === 0) return alert('กรุณากรอกข้อมูลให้ครบครับ');
 
         data.push({ num, name, amount, type });
         localStorage.setItem('ledger_data', JSON.stringify(data));
         render();
+        // ล้างช่องกรอกหลังจากบันทึก
+        document.getElementById('amount').value = '';
     }
 
     function render() {
         let total = 0;
         let html = '';
-        data.forEach(item => {
-            // คำนวณแบบตรงไปตรงมา: บวกคือบวก ลบคือลบ
+        // แสดงรายการล่าสุดไว้บนสุด
+        [...data].reverse().forEach(item => {
             total += (item.type === 'plus' ? item.amount : -item.amount);
-            html += `<p>${item.num}: ${item.type === 'plus' ? '+' : '-'}${item.amount}</p>`;
+            html += `<div class="list-item">
+                        <span>ห้อง ${item.num} (${item.name})</span>
+                        <span class="${item.type}">${item.type === 'plus' ? '+' : '-'}${item.amount}</span>
+                     </div>`;
         });
-        document.getElementById('total').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2}) + ' บาท';
+        document.getElementById('total').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2}) + ' THB';
         document.getElementById('list').innerHTML = html;
     }
 
-    render(); // เรียกให้แสดงผลทันทีที่โหลดหน้าเว็บ
+    render();
 </script>
 
 </body>
