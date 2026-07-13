@@ -1,34 +1,49 @@
-// ปรับปรุงฟังก์ชัน updateUI ใหม่
+// 1. ฟังก์ชัน updateUI ที่ปรับปรุงแล้ว
 function updateUI() {
     const tbody = document.getElementById('data-table-body');
-    // ... (ส่วนคำนวณยอดเงินคงเหลือเหมือนเดิม) ...
+    const counter = document.getElementById('list-count');
+    const totalBalanceEl = document.getElementById('total-balance');
+    
+    tbody.innerHTML = '';
+    let totalBalance = dataList.reduce((sum, item) => sum + item.amount, 0);
+    totalBalanceEl.innerText = `${totalBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} บาท`;
+
+    let filteredList = [...dataList];
+    if (currentTab === 'income') filteredList = dataList.filter(item => item.amount >= 0);
+    else if (currentTab === 'expense') filteredList = dataList.filter(item => item.amount < 0);
+
+    counter.innerText = `${filteredList.length} รายการ`;
+
+    filteredList.sort((a, b) => parseInt(a.numId) - parseInt(b.numId));
 
     filteredList.forEach(item => {
         const isIncome = item.amount >= 0;
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-blue-50 transition-colors cursor-pointer border-b";
-        // เมื่อคลิกที่แถว จะเรียกฟังก์ชันเปิดหน้าต่างทำรายการ (ต้องเขียนฟังก์ชันเพิ่มด้านล่าง)
+        // เพิ่ม cursor-pointer เพื่อให้รู้ว่ากดได้
+        tr.className = "hover:bg-blue-50 transition-colors cursor-pointer border-b"; 
+        
+        // เมื่อกดที่แถวนี้ จะเรียกฟังก์ชันสำหรับใส่เงิน
         tr.onclick = () => openTransactionModal(item.id); 
         
         tr.innerHTML = `
             <td class="p-4 text-center font-bold text-slate-700">${item.numId}</td>
             <td class="p-4 font-bold text-slate-800">${item.titleName}${item.fullname}</td>
             <td class="p-4 text-right font-bold text-lg ${isIncome ? 'text-blue-600' : 'text-rose-500'}">
-                ${item.amount.toLocaleString()} บาท
+                ${item.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} บาท
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
 
-// ฟังก์ชันใหม่: หน้าต่างเด้งขึ้นมาให้กดบวก/ลบ
+// 2. ฟังก์ชันใหม่สำหรับกดใส่เงิน (วางต่อท้ายได้เลย)
 function openTransactionModal(id) {
-    const amount = prompt("ระบุจำนวนเงิน (ใส่เครื่องหมาย - ด้านหน้าถ้าต้องการลบเงิน):");
-    if (amount !== null && amount !== "") {
+    const amount = prompt("ระบุจำนวนเงิน (ใส่เครื่องหมาย - ด้านหน้าถ้าต้องการลบเงิน เช่น -100):");
+    if (amount !== null && amount !== "" && !isNaN(amount)) {
         const value = parseFloat(amount);
         const itemIndex = dataList.findIndex(i => i.id === id);
         if (itemIndex !== -1) {
-            dataList[itemIndex].amount += value; // อัปเดตเงินในชื่อนั้นทันที
+            dataList[itemIndex].amount += value; // บวกเงินเข้ากับยอดเดิมทันที
             saveToStorage();
             updateUI();
         }
