@@ -2,89 +2,79 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>ระบบสถาปัตยกรรมบัญชีหอพัก - หอ 8 ไผ่สีทอง</title>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>ระบบจัดการการเงิน หอ 8 ไผ่สีทอง</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
-        body { background: #f1f5f9; min-height: 100vh; display: flex; justify-content: center; padding: 20px; }
-        .container { width: 100%; max-width: 400px; background: #ffffff; padding: 32px; border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
-        .hidden { display: none !important; }
-        .profile-img { width: 96px; height: 96px; border-radius: 50%; border: 4px solid #1e40af; margin-bottom: 14px; }
-        h2 { font-size: 22px; margin-bottom: 20px; }
-        input { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 16px; }
-        button { width: 100%; padding: 15px; background: #1e40af; color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .balance-card { background: #0f172a; color: #4ade80; padding: 20px; border-radius: 20px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 24px; margin-bottom: 20px; }
-        .item-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-        .type-plus { color: #2563eb; }
-        .type-minus { color: #dc2626; }
+        body { font-family: 'Sarabun', sans-serif; background: #f8fafc; padding: 20px; }
+        .main-card { background: white; width: 100%; max-width: 1000px; margin: auto; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #2563eb; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .content { display: grid; grid-template-columns: 350px 1fr; gap: 20px; padding: 20px; }
+        .input-box { background: #f1f5f9; padding: 20px; border-radius: 12px; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #cbd5e1; border-radius: 8px; }
+        .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; }
+        .btn-plus { background: #2563eb; }
+        .btn-minus { background: #ef4444; }
+        .btn-save { background: #1e40af; width: 100%; margin-top: 10px; }
+        .list-area { border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-<!-- หน้า Login -->
-<div id="login-screen" class="container">
-    <img class="profile-img" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5">
-    <h2>เข้าสู่ระบบจัดการหอพัก</h2>
-    <input type="text" id="user" value="admin" placeholder="ชื่อผู้ใช้">
-    <input type="password" id="pass" value="1234" placeholder="รหัสผ่าน">
-    <button onclick="login()">ยืนยันสิทธิ์</button>
-</div>
-
-<!-- หน้า Dashboard -->
-<div id="main-screen" class="container hidden">
-    <h3>หอ 8 ไผ่สีทอง</h3>
-    <div class="balance-card" id="total-balance">0.00 THB</div>
-    <input type="number" id="num" placeholder="เลขห้อง">
-    <input type="text" id="name" placeholder="ชื่อผู้เช่า">
-    <input type="number" id="amount" placeholder="จำนวนเงิน">
-    <select id="type" style="width:100%; padding:14px; border-radius:14px; margin: 8px 0;">
-        <option value="plus">บันทึกเงินบวก</option>
-        <option value="minus">บันทึกเงินลบ</option>
-    </select>
-    <button onclick="saveData()">บันทึกรายการ</button>
-    <div id="list-container" style="margin-top:20px;"></div>
+<div class="main-card">
+    <div class="header">
+        <div><h3>หอ 8 ไผ่สีทอง</h3><small>ผู้ดูแลระบบ: Vadaw216</small></div>
+        <div style="text-align: right;"><div>ยอดเงินคงเหลือรวม</div><h2 id="total">0.00 บาท</h2></div>
+    </div>
+    <div class="content">
+        <div class="input-box">
+            <h4>บันทึกข้อมูลธุรกรรม</h4>
+            <input type="text" id="num" placeholder="เลขที่ / เลขห้อง">
+            <div style="display: flex; gap: 5px;">
+                <select style="width: 80px;"><option>นาย</option></select>
+                <input type="text" id="name" placeholder="ชื่อ-นามสกุล">
+            </div>
+            <input type="number" id="amount" placeholder="0.00">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-plus" onclick="setOp('plus')">มีเงิน (บวกเงิน)</button>
+                <button class="btn btn-minus" onclick="setOp('minus')">รายลบ (ลบเงิน)</button>
+            </div>
+            <button class="btn btn-save" onclick="save()">บันทึกข้อมูล</button>
+        </div>
+        <div class="list-area" id="list">
+            <p>ยังไม่มีรายการ</p>
+        </div>
+    </div>
 </div>
 
 <script>
-    let data = JSON.parse(localStorage.getItem('ledger_v8') || '[]');
+    let data = JSON.parse(localStorage.getItem('ledger') || '[]');
+    let currentOp = 'plus';
 
-    function login() {
-        if(document.getElementById('user').value === 'admin' && document.getElementById('pass').value === '1234') {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-screen').classList.remove('hidden');
-            render();
-        } else alert('รหัสผ่านไม่ถูกต้อง');
-    }
+    function setOp(op) { currentOp = op; alert('เลือกโหมด: ' + op); }
 
-    function saveData() {
+    function save() {
         const num = document.getElementById('num').value;
         const name = document.getElementById('name').value;
-        // ใช้ Math.abs บังคับเป็นบวกเสมอ เพื่อไม่ให้เครื่องหมายลบมากวนตรรกะ
+        // ใช้ Math.abs เพื่อความแม่นยำ ไม่ว่าจะใส่ลบหรือไม่ก็ตาม
         const amount = Math.abs(parseFloat(document.getElementById('amount').value) || 0);
-        const type = document.getElementById('type').value;
-
-        if(!num || !name || amount === 0) return alert('กรุณากรอกข้อมูลให้ครบ');
-
-        data.push({ num, name, amount, type });
-        localStorage.setItem('ledger_v8', JSON.stringify(data));
+        if(!num || !name || amount === 0) return alert('กรอกข้อมูลไม่ครบ');
+        
+        data.push({ num, name, amount, type: currentOp });
+        localStorage.setItem('ledger', JSON.stringify(data));
         render();
-        document.getElementById('amount').value = '';
     }
 
     function render() {
         let total = 0;
-        let html = '';
-        [...data].reverse().forEach(item => {
+        let html = '<table style="width:100%"><tr><th>เลขที่</th><th>ชื่อ</th><th>จำนวน</th></tr>';
+        data.forEach(item => {
             total += (item.type === 'plus' ? item.amount : -item.amount);
-            html += `<div class="item-row">
-                        <span>ห้อง ${item.num} (${item.name})</span>
-                        <span class="type-${item.type}">${item.type === 'plus' ? '+' : '-'}${item.amount.toFixed(2)}</span>
-                     </div>`;
+            html += `<tr><td>${item.num}</td><td>${item.name}</td><td>${item.type==='plus'?'+':'-'}${item.amount}</td></tr>`;
         });
-        document.getElementById('total-balance').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2}) + ' THB';
-        document.getElementById('list-container').innerHTML = html;
+        document.getElementById('total').innerText = total.toFixed(2) + ' บาท';
+        document.getElementById('list').innerHTML = html + '</table>';
     }
+    render();
 </script>
 
 </body>
