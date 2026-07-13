@@ -170,9 +170,10 @@
         .item-room { width: 36px; height: 36px; background: #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #334155; }
         .item-name { font-size: 13px; font-weight: 600; color: #1e293b; }
         .item-right { text-align: right; display: flex; align-items: center; gap: 10px; }
-        .item-amount { font-size: 14px; font-weight: 700; font-family: monospace; }
-        .item-amount.plus { color: #2563eb; }
-        .item-amount.minus { color: #dc2626; }
+        .item-badge { font-size: 11px; padding: 2px 6px; border-radius: 6px; font-weight: bold; }
+        .item-badge.plus { background: #eff6ff; color: #2563eb; }
+        .item-badge.minus { background: #fef2f2; color: #dc2626; }
+        .item-amount { font-size: 14px; font-weight: 700; font-family: monospace; color: #1e293b; }
         .btn-action { background: none; border: none; padding: 4px; font-size: 14px; }
         .btn-action.delete { color: #ef4444; }
 
@@ -277,21 +278,21 @@
                 <div class="radio-tile-group">
                     <label style="flex: 1;">
                         <input type="radio" name="calc-operator" value="plus" id="radio-plus" checked onchange="updateLivePreview()" style="display: none;">
-                        <div class="radio-tile type-plus">➕ เงินเข้า / เพิ่มเงิน</div>
+                        <div class="radio-tile type-plus">➕ บันทึกเงินบวก</div>
                     </label>
                     <label style="flex: 1;">
                         <input type="radio" name="calc-operator" value="minus" id="radio-minus" onchange="updateLivePreview()" style="display: none;">
-                        <div class="radio-tile type-minus">➖ เงินออก / หักลบเงิน</div>
+                        <div class="radio-tile type-minus">➖ บันทึกเงินลบ</div>
                     </label>
                 </div>
             </div>
 
             <div>
-                <label style="font-size: 12px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">จำนวนเงินทำรายการใหม่ (บาท)</label>
+                <label style="font-size: 12px; font-weight: bold; color: #475569; display:block; margin-bottom:4px;">จำนวนเงินทำรายการ (บาท)</label>
                 <input type="number" id="input-amount" step="any" oninput="updateLivePreview()" style="width:100%; padding: 12px; border:1.5px solid #cbd5e1; border-radius:12px; font-size:18px; font-weight:700; background:#f8fafc;" placeholder="0.00">
             </div>
 
-            <!-- กล่องสรุปผลเรียลไทม์ (คำนวณเอาเงินเก่าตั้งลบเงินใหม่ ไม่ติดลบ) -->
+            <!-- กล่องสรุปผลเรียลไทม์ (คณิตศาสตร์ตามความจริง 100 - 50 = 50 ไม่ติดลบ) -->
             <div class="calc-preview-box">
                 <div class="calc-preview-title" id="preview-room-title">กรุณาระบุเลขห้อง...</div>
                 <div class="calc-preview-formula" id="preview-formula">0.00</div>
@@ -332,7 +333,7 @@
         let currentSessionKey = "";
         let dataList = [];
         let currentTab = "all";
-        let currentRoomOldBalance = 0; // เงินสะสมเดิมของห้องนั้นๆ
+        let currentRoomOldBalance = 0; // เงินสะสมที่คิดตามจริงเดิมของห้องนั้นๆ
 
         function showSection(sectionId) {
             document.getElementById('login-section').classList.add('hidden');
@@ -360,7 +361,7 @@
             if (storedAccount) {
                 const account = JSON.parse(storedAccount);
                 if (account.pass === pass) {
-                    currentSessionKey = `pai_see_thong_calc_v1_${user}`;
+                    currentSessionKey = `pai_see_thong_calc_v2_${user}`;
                     document.getElementById('display-user').innerText = user;
                     document.getElementById('user-avatar').src = account.avatar;
                     showSection('main-section');
@@ -378,7 +379,22 @@
             clearForm();
         }
 
-        // โหลดเช็กประวัติยอดเงินสะสมเดิมของห้องพัก
+        // คำนวณยอดสะสมของห้องตามความจริง (บวกเพิ่ม หรือ ลบออก ตามสถานะที่บันทึกไว้)
+        function calculateRoomBalance(roomNum, excludeId = null) {
+            let balance = 0;
+            dataList.forEach(item => {
+                if (item.numId.toString() === roomNum.toString() && item.id !== parseInt(excludeId)) {
+                    if (item.type === 'minus') {
+                        balance -= item.amount; // ถ้ารายการก่อนหน้าเป็นลบ ให้หักออก
+                    } else {
+                        balance += item.amount; // ถ้ารายการก่อนหน้าเป็นบวก ให้บวกเพิ่ม
+                    }
+                }
+            });
+            return balance;
+        }
+
+        // โหลดข้อมูลห้องพักและแสดงผลรวมสะสมเก่า
         function loadRoomData() {
             const numId = document.getElementById('num-id').value.trim();
             const editId = document.getElementById('edit-id').value;
@@ -391,14 +407,12 @@
                 return;
             }
 
-            // สรุปเงินที่มีเดิมอยู่แล้วในห้องนี้ (โดยไม่นับรวมไอดีที่กำลังเปิดแก้ไขอยู่ตอนนี้)
-            currentRoomOldBalance = dataList
-                .filter(item => item.numId.toString() === numId.toString() && item.id !== parseInt(editId))
-                .reduce((sum, item) => sum + item.amount, 0);
+            // คำนวณเงินสะสมตามความจริงสากล
+            currentRoomOldBalance = calculateRoomBalance(numId, editId);
 
             roomTitleEl.innerText = `🏢 ห้องที่ ${numId} (เงินสะสมเดิมในระบบ: ${currentRoomOldBalance.toLocaleString()} บ.)`;
             
-            // เติมชื่ออัตโนมัติหากห้องนี้เคยจดบันทึกไว้แล้ว
+            // ดึงชื่อเติมให้อัตโนมัติถ้าเคยมีประวัติ
             const matchUser = dataList.find(item => item.numId.toString() === numId.toString());
             if (matchUser && !editId) {
                 document.getElementById('title-name').value = matchUser.titleName;
@@ -408,7 +422,7 @@
             updateLivePreview();
         }
 
-        // ================= กลไกคิดเลขแบบคณิตศาสตร์ตามความจริงสากล (Real-time) =================
+        // ================= กลไกแสดงผลสูตรคณิตศาสตร์เรียลไทม์ตามความจริง =================
         function updateLivePreview() {
             const inputAmount = parseFloat(document.getElementById('input-amount').value) || 0;
             const isMinus = document.getElementById('radio-minus').checked;
@@ -419,11 +433,10 @@
             let finalNetResult = 0;
 
             if (isMinus) {
-                // คณิตศาสตร์ตามจริงสากล: เอาเงินเดิมตั้ง ลบออกด้วยเงินใหม่ (เช่น 100 - 50 = 50 ไม่ติดลบ)
+                // ตัวอย่างความจริง: 100 - 50 = 50 สวยงามตรงตามความจริง ไม่ติดลบ
                 finalNetResult = currentRoomOldBalance - inputAmount;
                 formulaEl.innerText = `${currentRoomOldBalance.toLocaleString()} - ${inputAmount.toLocaleString()}`;
             } else {
-                // เงินเข้าปกติ: เอาเงินเก่าบวกเพิ่มเงินใหม่
                 finalNetResult = currentRoomOldBalance + inputAmount;
                 formulaEl.innerText = `${currentRoomOldBalance.toLocaleString()} + ${inputAmount.toLocaleString()}`;
             }
@@ -449,13 +462,13 @@
                 return;
             }
 
-            // ระบบจัดเก็บประวัติหลังบ้าน: เงินเข้าเก็บค่าบวก หักเงินลบเก็บค่าลบ เพื่อนำไปสะสมต่อห้องได้ถูกต้อง
-            let finalSavedAmount = isMinus ? -Math.abs(inputAmountVal) : Math.abs(inputAmountVal);
+            // บันทึกแบบจำนวนเต็มบวกธรรมดาเสมอ ไม่จัดเก็บเป็นค่าติดลบให้สับสนในตาราง
+            let transactionType = isMinus ? 'minus' : 'plus';
 
             if (editId) {
-                dataList = dataList.map(item => item.id === parseInt(editId) ? { ...item, numId, titleName, fullname, amount: finalSavedAmount } : item);
+                dataList = dataList.map(item => item.id === parseInt(editId) ? { ...item, numId, titleName, fullname, amount: inputAmountVal, type: transactionType } : item);
             } else {
-                dataList.push({ id: Date.now(), numId, titleName, fullname, amount: finalSavedAmount });
+                dataList.push({ id: Date.now(), numId, titleName, fullname, amount: inputAmountVal, type: transactionType });
             }
 
             localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
@@ -477,7 +490,7 @@
             loadRoomData();
         }
 
-        // ดึงมาแก้ไขปรับปรุงข้อมูล
+        // ดึงรายการกลับมาแก้ไข
         function prepareEdit(id) {
             const item = dataList.find(i => i.id === id);
             if (item) {
@@ -485,12 +498,12 @@
                 document.getElementById('num-id').value = item.numId;
                 document.getElementById('title-name').value = item.titleName;
                 document.getElementById('fullname').value = item.fullname;
-                document.getElementById('input-amount').value = Math.abs(item.amount);
+                document.getElementById('input-amount').value = item.amount;
                 
-                if (item.amount >= 0) {
-                    document.getElementById('radio-plus').checked = true;
-                } else {
+                if (item.type === 'minus') {
                     document.getElementById('radio-minus').checked = true;
+                } else {
+                    document.getElementById('radio-plus').checked = true;
                 }
 
                 loadRoomData();
@@ -524,15 +537,22 @@
             const balanceCard = document.getElementById('balance-card');
             
             container.innerHTML = '';
-            let totalBalance = dataList.reduce((sum, item) => sum + item.amount, 0);
-            totalBalanceEl.innerText = `${totalBalance.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
+            
+            // คำนวณยอดเงินรวมรวมทุกห้องในระบบสุทธิตามความเป็นจริง
+            let systemTotalBalance = 0;
+            dataList.forEach(item => {
+                if (item.type === 'minus') systemTotalBalance -= item.amount;
+                else systemTotalBalance += item.amount;
+            });
+            
+            totalBalanceEl.innerText = `${systemTotalBalance.toLocaleString(undefined, {minimumFractionDigits:2})} บาท`;
 
-            if(totalBalance >= 0) balanceCard.classList.remove('negative');
+            if(systemTotalBalance >= 0) balanceCard.classList.remove('negative');
             else balanceCard.classList.add('negative');
 
             let filtered = [...dataList];
-            if (currentTab === 'income') filtered = dataList.filter(item => item.amount >= 0);
-            if (currentTab === 'expense') filtered = dataList.filter(item => item.amount < 0);
+            if (currentTab === 'income') filtered = dataList.filter(item => item.type !== 'minus');
+            if (currentTab === 'expense') filtered = dataList.filter(item => item.type === 'minus');
 
             document.getElementById('list-count').innerText = `${filtered.length} รายการ`;
 
@@ -544,7 +564,7 @@
             filtered.sort((a, b) => parseInt(a.numId) - parseInt(b.numId));
 
             filtered.forEach(item => {
-                const isIncome = item.amount >= 0;
+                const isMinusType = item.type === 'minus';
                 const div = document.createElement('div');
                 div.className = 'data-item';
                 div.innerHTML = `
@@ -553,7 +573,8 @@
                         <div class="item-name">${item.titleName}${item.fullname}</div>
                     </div>
                     <div class="item-right">
-                        <span class="item-amount ${isIncome ? 'plus' : 'minus'}">${isIncome ? '+' : ''}${item.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
+                        <span class="item-badge ${isMinusType ? 'minus' : 'plus'}">${isMinusType ? 'เงินลบ' : 'เงินบวก'}</span>
+                        <span class="item-amount">${item.amount.toLocaleString(undefined, {minimumFractionDigits:2})}</span>
                         <button onclick="deleteItem(${item.id})" class="btn-action delete"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
