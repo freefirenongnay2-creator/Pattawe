@@ -1,473 +1,73 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบสถาปัตยกรรมบัญชีหอพัก - หอ 8 ไผ่สีทอง</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 12px; color: #1e293b; }
+<!-- ปรับปรุง Engine การคำนวณในฟังก์ชัน updateLivePreview และ saveAccountData -->
 
-        .auth-container { width: 100%; max-width: 400px; background: #ffffff; padding: 32px 24px; border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.06); margin-top: 24px; text-align: center; border: 1px solid #e2e8f0; }
-        .auth-profile-img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 4px solid #1e40af; margin-bottom: 14px; box-shadow: 0 8px 16px rgba(30,64,175,0.2); }
-        .auth-container h2 { font-size: 24px; color: #0f172a; font-weight: 800; letter-spacing: -0.5px; }
-        .auth-container p.subtitle { font-size: 13.5px; color: #64748b; margin-bottom: 28px; font-weight: 500; }
+<script>
+    // ส่วนที่แก้ไข: ปรับตรรกะการคำนวณให้ยืดหยุ่นขึ้น
+    function updateLivePreview() {
+        // ใช้ Math.abs() ดึงเฉพาะตัวเลขมาคำนวณเสมอ ไม่สนเครื่องหมายลบที่พิมพ์เกินมา
+        let inputAmount = Math.abs(parseFloat(document.getElementById('input-amount').value) || 0);
+        const isMinus = document.getElementById('radio-minus').checked;
         
-        .input-group { margin-bottom: 16px; text-align: left; }
-        .input-group label { display: block; font-size: 13.5px; font-weight: 700; color: #334155; margin-bottom: 6px; }
-        .input-group input, .input-group select { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 16px; outline: none; background: #f8fafc; color: #0f172a; transition: all 0.2s; }
-        .input-group input:focus { border-color: #1e40af; background: #fff; box-shadow: 0 0 0 4px rgba(30,64,175,0.1); }
-        
-        .btn-primary { width: 100%; padding: 15px; background: #1e40af; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(30,64,175,0.2); }
-        .btn-primary:active { transform: scale(0.98); }
+        const mOldEl = document.getElementById('m-old');
+        const mOpEl = document.getElementById('m-op');
+        const mInputEl = document.getElementById('m-input');
+        const totalDisplayEl = document.getElementById('preview-total-display');
 
-        /* Dashboard Interface */
-        .main-container { width: 100%; max-width: 500px; display: none; flex-direction: column; gap: 14px; }
-        .app-header { background: #1e40af; color: white; padding: 16px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 20px rgba(30,64,175,0.15); }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid white; }
-        .user-text h3 { font-size: 16px; font-weight: 800; }
-        .user-text p { font-size: 11.5px; color: #93c5fd; font-weight: 500; }
-        .btn-logout { background: rgba(255,255,255,0.18); border: none; color: white; padding: 10px 14px; border-radius: 12px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+        mOldEl.innerText = currentRoomOldBalance.toFixed(2);
+        mInputEl.innerText = inputAmount.toFixed(2);
 
-        .balance-card { background: #ffffff; padding: 20px; border-radius: 24px; text-align: center; border: 2px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .balance-card p { font-size: 13px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .balance-card h2 { font-size: 30px; color: #0f172a; font-weight: 900; margin-top: 4px; font-family: 'Share Tech Mono', monospace; }
+        // คำนวณแบบตรงไปตรงมา
+        let netTerminalBalance = isMinus ? (currentRoomOldBalance - inputAmount) : (currentRoomOldBalance + inputAmount);
 
-        /* Ledger Input Architecture */
-        .form-card { background: white; padding: 20px; border-radius: 28px; border: 2px solid #e2e8f0; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.01); }
-        
-        .radio-tile-group { display: flex; gap: 12px; margin-top: 2px; }
-        .radio-tile { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 14px; border: 2.5px solid #e2e8f0; border-radius: 16px; cursor: pointer; transition: all 0.2s; }
-        .radio-tile .tile-title { font-size: 15px; font-weight: 800; color: #475569; }
-        .radio-tile .tile-desc { font-size: 11px; color: #94a3b8; font-weight: 500; }
-        
-        input[type="radio"]:checked + .radio-tile.type-plus { border-color: #2563eb; background: #f0f5ff; }
-        input[type="radio"]:checked + .radio-tile.type-plus .tile-title { color: #2563eb; }
-        input[type="radio"]:checked + .radio-tile.type-minus { border-color: #dc2626; background: #fff5f5; }
-        input[type="radio"]:checked + .radio-tile.type-minus .tile-title { color: #dc2626; }
-
-        /* Global Reality Presentation Box */
-        .calc-preview-box { background: #090d16; color: white; padding: 16px; border-radius: 20px; display: flex; flex-direction: column; gap: 8px; border: 2px solid #1e293b; box-shadow: inset 0 4px 10px rgba(0,0,0,0.3); }
-        .calc-preview-title { font-size: 12.5px; color: #38bdf8; font-weight: 800; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.5px; }
-        
-        .matrix-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        .matrix-cell { text-align: center; }
-        .matrix-cell label { display: block; font-size: 10px; color: #64748b; font-weight: 700; margin-bottom: 2px; }
-        .matrix-val { font-family: 'Share Tech Mono', monospace; font-size: 15px; font-weight: bold; color: #f1f5f9; }
-        
-        .calc-preview-total { font-family: 'Share Tech Mono', monospace; font-size: 24px; color: #4ade80; font-weight: 900; text-align: right; padding-top: 6px; border-top: 2px dashed #1e293b; }
-
-        /* Ledger History Presentation */
-        .list-card { background: white; padding: 20px; border-radius: 28px; border: 2px solid #e2e8f0; }
-        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .list-header h4 { font-size: 16px; font-weight: 800; color: #0f172a; }
-        .list-counter { background: #f0f5ff; color: #1e40af; padding: 4px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 800; border: 1px solid #dbeafe; }
-
-        .data-list { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; }
-        .data-item { display: flex; flex-direction: column; padding: 14px; background: #f8fafc; border-radius: 20px; border: 1.5px solid #e2e8f0; gap: 10px; }
-        
-        .item-row-top { display: flex; justify-content: space-between; align-items: center; }
-        .item-left { display: flex; align-items: center; gap: 12px; flex-grow: 1; cursor: pointer; }
-        .item-room { width: 44px; height: 44px; background: #e2e8f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #0f172a; border: 1px solid #cbd5e1; }
-        
-        .item-right { display: flex; align-items: center; gap: 10px; text-align: right; }
-        .item-badge { font-size: 11px; padding: 3px 8px; border-radius: 8px; font-weight: 800; }
-        .item-badge.plus { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-        .item-badge.minus { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
-        .item-amount { font-size: 16px; font-weight: 800; font-family: 'Share Tech Mono', monospace; }
-        
-        .item-row-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1.5px dashed #e2e8f0; padding-top: 8px; font-size: 12px; color: #64748b; font-weight: 600; }
-        .btn-action.delete { color: #dc2626; background: #fff5f5; border: 1px solid #fecaca; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 8px; cursor: pointer; }
-
-        .empty-text { text-align: center; padding: 40px 20px; font-size: 14px; color: #94a3b8; }
-        .hidden { display: none !important; }
-    </style>
-</head>
-<body>
-
-    <!-- หน้าล็อกอิน -->
-    <div id="login-section" class="auth-container">
-        <img class="auth-profile-img" src="https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5" alt="หอ 8 ไผ่สีทอง">
-        <h2>หอ 8 ไผ่สีทอง</h2>
-        <p class="subtitle">ระบบประมวลผลบัญชีแยกประเภทสากล (Fixed Engine v9.1)</p>
-
-        <form onsubmit="handleLogin(event)">
-            <div class="input-group">
-                <label>ชื่อผู้ใช้งานหลัก</label>
-                <input type="text" id="username" value="admin" required>
-            </div>
-            <div class="input-group">
-                <label>รหัสผ่านความปลอดภัย</label>
-                <input type="password" id="password" value="1234" required>
-            </div>
-            <button type="submit" class="btn-primary">ยืนยันสิทธิ์เข้าใช้งาน</button>
-        </form>
-    </div>
-
-    <!-- หน้าหลักควบคุมระบบ -->
-    <div id="main-section" class="main-container">
-        
-        <div class="app-header">
-            <div class="user-info">
-                <img id="user-avatar" src="" class="user-avatar" alt="โปรไฟล์">
-                <div class="user-text">
-                    <h3 id="display-user">admin</h3>
-                    <p>สิทธิ์แอดมินสูงสุด: หอ 8 ไผ่สีทอง</p>
-                </div>
-            </div>
-            <button onclick="handleLogout()" class="btn-logout"><i class="fa-solid fa-power-off"></i> ปิดระบบ</button>
-        </div>
-
-        <div class="balance-card">
-            <p>ยอดดุลบัญชีสุทธิรวมในระบบ (GLOBAL NET ASSETS)</p>
-            <h2 id="total-balance">0.00 THB</h2>
-        </div>
-
-        <!-- ฟอร์มกรอกข้อมูล -->
-        <div class="form-card">
-            <input type="hidden" id="edit-id">
-
-            <div style="display: flex; gap: 10px;">
-                <div style="width: 35%">
-                    <label style="font-size: 13px; font-weight: 700; color: #475569; display:block; margin-bottom:4px;">เลขห้องพัก</label>
-                    <input type="number" id="num-id" oninput="loadRoomData()" style="width:100%; padding: 12px; border:2px solid #cbd5e1; border-radius:14px; font-weight:800; text-align:center; font-size:16px;" placeholder="101">
-                </div>
-                <div style="width: 65%;">
-                    <label style="font-size: 13px; font-weight: 700; color: #475569; display:block; margin-bottom:4px;">ชื่อผู้เช่าพักอาศัย</label>
-                    <div style="display: flex; gap: 6px;">
-                        <select id="title-name" style="padding: 12px; border:2px solid #cbd5e1; border-radius:14px; font-weight:700; font-size:15px; width: 85px;">
-                            <option value="นาย">นาย</option>
-                            <option value="น.ส.">น.ส.</option>
-                        </select>
-                        <input type="text" id="fullname" style="flex-grow:1; padding: 12px; border:2px solid #cbd5e1; border-radius:14px; font-size:15px; font-weight: 600;" placeholder="ชื่อ - นามสกุล">
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <label style="font-size: 13px; font-weight: 700; color: #475569; display:block; margin-bottom:4px;">คำสั่งดำเนินการทางบัญชี (Operator)</label>
-                <div class="radio-tile-group">
-                    <label style="flex: 1;">
-                        <input type="radio" name="calc-operator" value="plus" id="radio-plus" checked onchange="updateLivePreview()" style="display: none;">
-                        <div class="radio-tile type-plus">
-                            <span class="tile-title">➕ บันทึกเงินบวก</span>
-                            <span class="tile-desc">เพิ่มเม็ดเงินเข้าสู่ห้อง</span>
-                        </div>
-                    </label>
-                    <label style="flex: 1;">
-                        <input type="radio" name="calc-operator" value="minus" id="radio-minus" onchange="updateLivePreview()" style="display: none;">
-                        <div class="radio-tile type-minus">
-                            <span class="tile-title">➖ บันทึกเงินลบ</span>
-                            <span class="tile-desc">หักลดมูลค่าออกจากห้อง</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <div>
-                <label style="font-size: 13px; font-weight: 700; color: #475569; display:block; margin-bottom:4px;">จำนวนเงินที่ทำรายการ</label>
-                <input type="number" id="input-amount" step="any" oninput="updateLivePreview()" style="width:100%; padding: 14px; border:2px solid #cbd5e1; border-radius:14px; font-size:22px; font-weight:800; background:#f8fafc; color:#0f172a; text-align: right; font-family: 'Share Tech Mono', monospace;" placeholder="0.00">
-            </div>
-
-            <!-- หน้าจอตรวจสอบความถูกต้องเสมือนจริง -->
-            <div class="calc-preview-box">
-                <div class="calc-preview-title">
-                    <span id="preview-room-title">ระบบระบุห้องตรวจสอบ...</span>
-                    <span style="color:#10b981; font-size: 11px;"><i class="fa-solid fa-shield-halved"></i> Verified Real-time</span>
-                </div>
-                
-                <div class="matrix-grid">
-                    <div class="matrix-cell">
-                        <label>ยอดสะสมเดิม</label>
-                        <div id="m-old" class="matrix-val">0.00</div>
-                    </div>
-                    <div id="m-op" style="color: #64748b; font-weight: 900; font-size: 14px;">+</div>
-                    <div class="matrix-cell">
-                        <label>ยอดเงินที่ป้อน</label>
-                        <div id="m-input" class="matrix-val">0.00</div>
-                    </div>
-                </div>
-
-                <div class="calc-preview-total" id="preview-total-display">ผลลัพธ์ปลายทางสุทธิ: 0.00 บ.</div>
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 4px;">
-                <button onclick="clearForm()" style="width: 30%; background:#64748b; color:white; border:none; padding:14px; border-radius:14px; font-weight:700; cursor:pointer; font-size:14.5px;">ล้างข้อมูล</button>
-                <button id="btn-save-data" onclick="saveAccountData()" class="btn-primary" style="width: 70%; background: #10b981; padding:14px; font-size:15px;"><i class="fa-solid fa-square-check"></i> บันทึกเข้าระบบแยกประเภท</button>
-            </div>
-        </div>
-
-        <!-- รายการล็อกประวัติ -->
-        <div class="list-card">
-            <div class="list-header">
-                <h4>ประวัติประมวลผลสมุดบัญชีแยกประเภท</h4>
-                <span id="list-count" class="list-counter">0 รายการ</span>
-            </div>
-            <div id="data-list-container" class="data-list"></div>
-        </div>
-
-    </div>
-
-    <script>
-        const bossPhoto = "https://scontent.fphs1-1.fna.fbcdn.net/v/t39.30808-6/494680099_9688158957966745_8299403964989810686_n.jpg?stp=dst-jpg_tt6&cstp=mx1108x1477&ctp=s1108x1477&_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_eui2=AeEXeUevM8amyp01SMIuko5TDMYSN4cteH8MxhI3hy14f6MhaIBUClvdr6HwNSd8y6ce9q2RFVRAlkwGygf9Z3IG&_nc_ohc=DSq_9Bq9MosQ7kNvwHa4q-V&_nc_oc=Adr-SJEJ_0vOBcawzM9rDA29X-VvONfVDPa6a3BeZf_DdergahSzKEcpS5O6SlvT3C4&_nc_zt=23&_nc_ht=scontent.fphs1-1.fna&_nc_gid=fCxG8m7_k5aACtD6AJ_sIA&_nc_ss=7b2a8&oh=00_AQD1FLyGETelxzmqrW5-iyshWHc3TWkxYPbt4F7T_XKnSA&oe=6A5A79A5";
-        
-        let currentSessionKey = "";
-        let dataList = []; 
-        let currentRoomOldBalance = 0;
-
-        function showSection(sectionId) {
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('main-section').style.display = 'none';
-            if(sectionId === 'main-section') document.getElementById('main-section').style.display = 'flex';
+        if (isMinus) {
+            mOpEl.innerText = "➖ หักลบ";
+            mOpEl.style.color = "#dc2626";
+        } else {
+            mOpEl.innerText = "➕ บวกเพิ่ม";
+            mOpEl.style.color = "#2563eb";
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value;
-            
-            if (user === "admin" && pass === "1234") {
-                currentSessionKey = `pai_see_thong_ledger_v9_stable`;
-                document.getElementById('display-user').innerText = user;
-                document.getElementById('user-avatar').src = bossPhoto;
-                showSection('main-section');
-                fetchData();
-            } else {
-                alert("รหัสผ่านไม่ถูกต้อง!");
-            }
+        totalDisplayEl.innerText = `ผลลัพธ์ปลายทางสุทธิ: ${netTerminalBalance.toFixed(2)} บาท`;
+        totalDisplayEl.style.color = (netTerminalBalance < 0) ? "#f43f5e" : "#4ade80";
+    }
+
+    function saveAccountData() {
+        const numId = document.getElementById('num-id').value.trim();
+        const titleName = document.getElementById('title-name').value;
+        const fullname = document.getElementById('fullname').value.trim();
+        
+        // รับค่าแล้วบังคับเป็นบวกทันที ป้องกันบั๊กเครื่องหมายติดลบ
+        let inputAmountVal = Math.abs(parseFloat(document.getElementById('input-amount').value) || 0);
+        const isMinus = document.getElementById('radio-minus').checked;
+        const editId = document.getElementById('edit-id').value;
+
+        if (!numId || !fullname) {
+            alert("❌ กรุณากรอกเลขห้องและชื่อผู้เช่าให้ครบถ้วน!");
+            return;
         }
 
-        function fetchData() {
-            const data = localStorage.getItem(currentSessionKey);
-            dataList = data ? JSON.parse(data) : [];
-            updateUI();
-            clearForm();
-        }
+        const transactionType = isMinus ? 'minus' : 'plus';
 
-        function getRoomHistoricalBalance(roomNum, excludeId = null) {
-            let total = 0;
-            dataList.forEach(tx => {
-                if (tx.numId.toString() === roomNum.toString() && tx.id !== parseInt(excludeId)) {
-                    if (tx.type === 'minus') total -= tx.amount;
-                    else total += tx.amount;
+        if (editId) {
+            dataList = dataList.map(item => {
+                if (item.id === parseInt(editId)) {
+                    return { ...item, numId, titleName, fullname, amount: inputAmountVal, type: transactionType };
                 }
+                return item;
             });
-            return total;
-        }
-
-        function loadRoomData() {
-            const numId = document.getElementById('num-id').value.trim();
-            const editId = document.getElementById('edit-id').value;
-            const roomTitleEl = document.getElementById('preview-room-title');
-
-            if (!numId) {
-                currentRoomOldBalance = 0;
-                roomTitleEl.innerText = "ระบบระบุห้องตรวจสอบ...";
-                updateLivePreview();
-                return;
-            }
-
-            currentRoomOldBalance = getRoomHistoricalBalance(numId, editId);
-            roomTitleEl.innerText = `🏢 ตรวจสอบห้อง: ${numId}`;
-
-            const historicalMatch = dataList.find(item => item.numId.toString() === numId.toString());
-            if (historicalMatch && !editId) {
-                document.getElementById('title-name').value = historicalMatch.titleName;
-                document.getElementById('fullname').value = historicalMatch.fullname;
-            }
-
-            updateLivePreview();
-        }
-
-        function updateLivePreview() {
-            let inputAmount = parseFloat(document.getElementById('input-amount').value) || 0;
-            inputAmount = Math.abs(inputAmount); // ปล้นค่าลบออกให้เป็นบวกเสมอ ป้องกันสูตรเอ๋อ
-            const isMinus = document.getElementById('radio-minus').checked;
-            
-            const mOldEl = document.getElementById('m-old');
-            const mOpEl = document.getElementById('m-op');
-            const mInputEl = document.getElementById('m-input');
-            const totalDisplayEl = document.getElementById('preview-total-display');
-
-            mOldEl.innerText = currentRoomOldBalance.toFixed(2);
-            mInputEl.innerText = inputAmount.toFixed(2);
-
-            let netTerminalBalance = isMinus ? (currentRoomOldBalance - inputAmount) : (currentRoomOldBalance + inputAmount);
-
-            if (isMinus) {
-                mOpEl.innerText = "➖ หักลบ";
-                mOpEl.style.color = "#dc2626";
-            } else {
-                mOpEl.innerText = "➕ บวกเพิ่ม";
-                mOpEl.style.color = "#2563eb";
-            }
-
-            totalDisplayEl.innerText = `ผลลัพธ์ปลายทางสุทธิ: ${netTerminalBalance.toFixed(2)} บาท`;
-            
-            if (netTerminalBalance < 0) {
-                totalDisplayEl.style.color = "#f43f5e";
-            } else {
-                totalDisplayEl.style.color = "#4ade80";
-            }
-        }
-
-        function saveAccountData() {
-            const numId = document.getElementById('num-id').value.trim();
-            const titleName = document.getElementById('title-name').value;
-            const fullname = document.getElementById('fullname').value.trim();
-            let inputAmountVal = parseFloat(document.getElementById('input-amount').value) || 0;
-            const isMinus = document.getElementById('radio-minus').checked;
-            const editId = document.getElementById('edit-id').value;
-
-            // แปลงเป็นค่าบวกสัมบูรณ์อัตโนมัติ เพื่อล้างบั๊กกรณีป้อนเครื่องหมายลบซ้อนเข้ามา
-            inputAmountVal = Math.abs(inputAmountVal);
-
-            if (!numId || !fullname) {
-                alert("❌ กรุณากรอกเลขห้องและชื่อผู้เช่าให้ครบถ้วน!");
-                return;
-            }
-            if (inputAmountVal <= 0) {
-                alert("❌ จำนวนเงินที่บันทึกต้องมากกว่า 0 บาท!");
-                return;
-            }
-
-            // ระบบตรวจสอบความปลอดภัยในอดีต (ข้ามการล็อกสำหรับคนที่จงใจปล่อยติดลบตั้งแต่แรก)
-            let targetCheck = isMinus ? (currentRoomOldBalance - inputAmountVal) : (currentRoomOldBalance + inputAmountVal);
-            
-            // ปรับเงื่อนไข: ยอมให้เซฟได้ในโหมด "แก้ไขข้อมูลเก่า" หรือต้องการตัดยอดออกจริง ๆ 
-            if (targetCheck < -99999) { 
-                alert(`❌ ยอดเงินติดลบเกินขอบเขตระบบกำหนด!`);
-                return;
-            }
-
-            const transactionType = isMinus ? 'minus' : 'plus';
-
-            if (editId) {
-                dataList = dataList.map(item => {
-                    if (item.id === parseInt(editId)) {
-                        return { ...item, numId, titleName, fullname, amount: inputAmountVal, type: transactionType };
-                    }
-                    return item;
-                });
-            } else {
-                dataList.push({
-                    id: Date.now(),
-                    numId,
-                    titleName,
-                    fullname,
-                    amount: inputAmountVal,
-                    type: transactionType
-                });
-            }
-
-            localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
-            updateUI();
-            clearForm();
-            alert("💾 อัปเดตข้อมูลและบันทึกเข้าระบบแยกประเภทสำเร็จเรียบร้อย!");
-        }
-
-        function clearForm() {
-            document.getElementById('edit-id').value = "";
-            document.getElementById('num-id').value = "";
-            document.getElementById('fullname').value = "";
-            document.getElementById('input-amount').value = "";
-            document.getElementById('radio-plus').checked = true;
-            
-            document.getElementById('btn-save-data').innerHTML = '<i class="fa-solid fa-square-check"></i> บันทึกเข้าระบบแยกประเภท';
-            document.getElementById('btn-save-data').style.background = "#10b981";
-
-            loadRoomData();
-        }
-
-        function prepareEdit(id) {
-            const txNode = dataList.find(i => i.id === id);
-            if (txNode) {
-                document.getElementById('edit-id').value = txNode.id;
-                document.getElementById('num-id').value = txNode.numId;
-                document.getElementById('title-name').value = txNode.titleName;
-                document.getElementById('fullname').value = txNode.fullname;
-                document.getElementById('input-amount').value = txNode.amount;
-                
-                if (txNode.type === 'minus') document.getElementById('radio-minus').checked = true;
-                else document.getElementById('radio-plus').checked = true;
-
-                loadRoomData();
-                document.getElementById('btn-save-data').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> อัปเดตข้อมูลแก้ไข';
-                document.getElementById('btn-save-data').style.background = "#f59e0b";
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function deleteItem(id) {
-            if (confirm("ลบรายการธุรกรรมนี้หรือไม่?")) {
-                dataList = dataList.filter(item => item.id !== id);
-                localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
-                updateUI();
-                clearForm();
-            }
-        }
-
-        function updateUI() {
-            const container = document.getElementById('data-list-container');
-            const totalBalanceEl = document.getElementById('total-balance');
-            container.innerHTML = '';
-            
-            let globalNetAssets = 0;
-            dataList.forEach(item => {
-                if (item.type === 'minus') globalNetAssets -= item.amount;
-                else globalNetAssets += item.amount;
-            });
-            totalBalanceEl.innerText = `${globalNetAssets.toLocaleString(undefined, {minimumFractionDigits:2})} THB`;
-
-            document.getElementById('list-count').innerText = `${dataList.length} รายการ`;
-
-            if (dataList.length === 0) {
-                container.innerHTML = '<div class="empty-text">ไม่มีข้อมูลประวัติธุรกรรมในระบบ</div>';
-                return;
-            }
-
-            let renderList = [...dataList].reverse();
-
-            renderList.forEach(item => {
-                const isMinus = item.type === 'minus';
-                const div = document.createElement('div');
-                div.className = 'data-item';
-                div.innerHTML = `
-                    <div class="item-row-top">
-                        <div class="item-left" onclick="prepareEdit(${item.id})">
-                            <div class="item-room">${item.numId}</div>
-                            <div class="item-name">
-                                <div style="font-weight: 800; color: #0f172a;">${item.titleName}${item.fullname}</div>
-                            </div>
-                        </div>
-                        <div class="item-right">
-                            <span class="item-badge ${isMinus ? 'minus' : 'plus'}">${isMinus ? 'เงินลบ' : 'เงินบวก'}</span>
-                            <span class="item-amount" style="color: ${isMinus ? '#dc2626' : '#2563eb'};">
-                                ${isMinus ? '-' : '+'}${item.amount.toFixed(2)}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="item-row-bottom">
-                        <span>คลิกที่ข้อมูลเพื่อกดแก้ไขรายละเอียดได้</span>
-                        <button onclick="deleteItem(${item.id})" class="btn-action delete"><i class="fa-solid fa-trash-can"></i> ลบ</button>
-                    </div>
-                `;
-                container.appendChild(div);
+        } else {
+            dataList.push({
+                id: Date.now(),
+                numId,
+                titleName,
+                fullname,
+                amount: inputAmountVal, // เก็บเป็นค่าบวกเสมอ
+                type: transactionType
             });
         }
 
-        function handleLogout() {
-            currentSessionKey = ""; 
-            showSection('login-section');
-            clearForm();
-        }
-    </script>
-</body>
-</html>
+        localStorage.setItem(currentSessionKey, JSON.stringify(dataList));
+        updateUI();
+        clearForm();
+        alert("💾 บันทึกรายการสำเร็จ!");
+    }
+</script>
